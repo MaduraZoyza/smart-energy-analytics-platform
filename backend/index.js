@@ -76,3 +76,29 @@ app.listen(PORT, () => {
   console.log('  GET /energy/zone');
   console.log('  GET /energy/daily');
 });
+
+// ROUTE 4: GET /energy/summary — return key stats
+app.get('/energy/summary', (req, res) => {
+  const total = energyData.reduce((sum, r) => sum + r.energy_kwh, 0);
+  const average = total / energyData.length;
+
+  const zoneTotals = {};
+  energyData.forEach(record => {
+    if (!zoneTotals[record.zone]) zoneTotals[record.zone] = 0;
+    zoneTotals[record.zone] += record.energy_kwh;
+  });
+
+  const peakZone = Object.entries(zoneTotals).sort((a, b) => b[1] - a[1])[0];
+
+  res.json({
+    total_kwh: parseFloat(total.toFixed(2)),
+    average_kwh_per_record: parseFloat(average.toFixed(2)),
+    total_records: energyData.length,
+    peak_zone: peakZone[0],
+    peak_zone_kwh: parseFloat(peakZone[1].toFixed(2)),
+    zones: Object.entries(zoneTotals).map(([zone, total]) => ({
+      zone,
+      total_kwh: parseFloat(total.toFixed(2))
+    }))
+  });
+});

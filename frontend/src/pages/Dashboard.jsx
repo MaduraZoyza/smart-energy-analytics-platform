@@ -71,124 +71,124 @@ const liveFluctuationData = [
 const zoneComparisonData = {
   hourly: {
     summary: [
-      { name: "HVAC", usage: 76, fill: "#21ff8a" },
-      { name: "Lighting", usage: 28, fill: "#e7d84b" },
-      { name: "Floor 1", usage: 27, fill: "#22d3ee" },
-      { name: "Floor 2", usage: 40, fill: "#1d8fb3" },
+      { name: "Floor 1", usage: 88, fill: "#22d3ee" },
+      { name: "Floor 2", usage: 94, fill: "#21ff8a" },
+      { name: "Floor 3", usage: 118, fill: "#e7d84b" },
+      { name: "Common Areas", usage: 42, fill: "#a78bfa" },
     ],
     breakdown: {
-      HVAC: [
-        { name: "Cooling", value: 45, fill: "#8ce99a" },
-        { name: "Ventilation", value: 30, fill: "#5fd97b" },
-        { name: "Heating", value: 25, fill: "#2eb85c" },
-      ],
-      Lighting: [
-        { name: "Office Lights", value: 50, fill: "#f8e16c" },
-        { name: "Corridors", value: 30, fill: "#f1d54b" },
-        { name: "Exterior", value: 20, fill: "#dcbf1f" },
-      ],
       "Floor 1": [
-        { name: "Open Office", value: 40, fill: "#7dd3fc" },
-        { name: "Meeting Rooms", value: 35, fill: "#38bdf8" },
-        { name: "Reception", value: 25, fill: "#0ea5e9" },
+        { name: "HVAC", value: 45, fill: "#8ce99a" },
+        { name: "Lighting", value: 25, fill: "#f8e16c" },
+        { name: "Plug Loads", value: 30, fill: "#60a5fa" },
       ],
       "Floor 2": [
-        { name: "Private Offices", value: 45, fill: "#60a5fa" },
-        { name: "Labs", value: 30, fill: "#3b82f6" },
-        { name: "Common Area", value: 25, fill: "#2563eb" },
+        { name: "HVAC", value: 48, fill: "#8ce99a" },
+        { name: "Lighting", value: 24, fill: "#f8e16c" },
+        { name: "Plug Loads", value: 28, fill: "#60a5fa" },
+      ],
+      "Floor 3": [
+        { name: "HVAC", value: 35, fill: "#8ce99a" },
+        { name: "Lighting", value: 20, fill: "#f8e16c" },
+        { name: "Server Room", value: 45, fill: "#fb7185" },
+      ],
+      "Common Areas": [
+        { name: "Elevators", value: 35, fill: "#38bdf8" },
+        { name: "Fire System", value: 20, fill: "#f97316" },
+        { name: "Outdoor Lighting", value: 45, fill: "#facc15" },
       ],
     },
   },
 
   daily: {
     summary: [
-      { name: "HVAC", usage: 520, fill: "#21ff8a" },
-      { name: "Lighting", usage: 260, fill: "#e7d84b" },
-      { name: "Floor 1", usage: 210, fill: "#22d3ee" },
-      { name: "Floor 2", usage: 340, fill: "#1d8fb3" },
+      { name: "Floor 1", usage: 620, fill: "#22d3ee" },
+      { name: "Floor 2", usage: 690, fill: "#21ff8a" },
+      { name: "Floor 3", usage: 810, fill: "#e7d84b" },
+      { name: "Common Areas", usage: 280, fill: "#a78bfa" },
     ],
     breakdown: {
-      HVAC: [
-        { name: "Cooling", value: 42, fill: "#8ce99a" },
-        { name: "Ventilation", value: 31, fill: "#5fd97b" },
-        { name: "Heating", value: 27, fill: "#2eb85c" },
-      ],
-      Lighting: [
-        { name: "Office Lights", value: 48, fill: "#f8e16c" },
-        { name: "Corridors", value: 32, fill: "#f1d54b" },
-        { name: "Exterior", value: 20, fill: "#dcbf1f" },
-      ],
       "Floor 1": [
-        { name: "Open Office", value: 43, fill: "#7dd3fc" },
-        { name: "Meeting Rooms", value: 33, fill: "#38bdf8" },
-        { name: "Reception", value: 24, fill: "#0ea5e9" },
+        { name: "HVAC", value: 44, fill: "#8ce99a" },
+        { name: "Lighting", value: 26, fill: "#f8e16c" },
+        { name: "Plug Loads", value: 30, fill: "#60a5fa" },
       ],
       "Floor 2": [
-        { name: "Private Offices", value: 46, fill: "#60a5fa" },
-        { name: "Labs", value: 29, fill: "#3b82f6" },
-        { name: "Common Area", value: 25, fill: "#2563eb" },
+        { name: "HVAC", value: 47, fill: "#8ce99a" },
+        { name: "Lighting", value: 25, fill: "#f8e16c" },
+        { name: "Plug Loads", value: 28, fill: "#60a5fa" },
+      ],
+      "Floor 3": [
+        { name: "HVAC", value: 34, fill: "#8ce99a" },
+        { name: "Lighting", value: 19, fill: "#f8e16c" },
+        { name: "Server Room", value: 47, fill: "#fb7185" },
+      ],
+      "Common Areas": [
+        { name: "Elevators", value: 34, fill: "#38bdf8" },
+        { name: "Fire System", value: 18, fill: "#f97316" },
+        { name: "Outdoor Lighting", value: 48, fill: "#facc15" },
       ],
     },
   },
 
   weekly: {
     summary: [
-      { name: "HVAC", usage: 3100, fill: "#21ff8a" },
-      { name: "Lighting", usage: 1450, fill: "#e7d84b" },
-      { name: "Floor 1", usage: 1250, fill: "#22d3ee" },
-      { name: "Floor 2", usage: 1850, fill: "#1d8fb3" },
+      { name: "Floor 1", usage: 4200, fill: "#22d3ee" },
+      { name: "Floor 2", usage: 4650, fill: "#21ff8a" },
+      { name: "Floor 3", usage: 5400, fill: "#e7d84b" },
+      { name: "Common Areas", usage: 1800, fill: "#a78bfa" },
     ],
     breakdown: {
-      HVAC: [
-        { name: "Cooling", value: 44, fill: "#8ce99a" },
-        { name: "Ventilation", value: 29, fill: "#5fd97b" },
-        { name: "Heating", value: 27, fill: "#2eb85c" },
-      ],
-      Lighting: [
-        { name: "Office Lights", value: 49, fill: "#f8e16c" },
-        { name: "Corridors", value: 31, fill: "#f1d54b" },
-        { name: "Exterior", value: 20, fill: "#dcbf1f" },
-      ],
       "Floor 1": [
-        { name: "Open Office", value: 41, fill: "#7dd3fc" },
-        { name: "Meeting Rooms", value: 34, fill: "#38bdf8" },
-        { name: "Reception", value: 25, fill: "#0ea5e9" },
+        { name: "HVAC", value: 43, fill: "#8ce99a" },
+        { name: "Lighting", value: 27, fill: "#f8e16c" },
+        { name: "Plug Loads", value: 30, fill: "#60a5fa" },
       ],
       "Floor 2": [
-        { name: "Private Offices", value: 45, fill: "#60a5fa" },
-        { name: "Labs", value: 30, fill: "#3b82f6" },
-        { name: "Common Area", value: 25, fill: "#2563eb" },
+        { name: "HVAC", value: 46, fill: "#8ce99a" },
+        { name: "Lighting", value: 25, fill: "#f8e16c" },
+        { name: "Plug Loads", value: 29, fill: "#60a5fa" },
+      ],
+      "Floor 3": [
+        { name: "HVAC", value: 33, fill: "#8ce99a" },
+        { name: "Lighting", value: 20, fill: "#f8e16c" },
+        { name: "Server Room", value: 47, fill: "#fb7185" },
+      ],
+      "Common Areas": [
+        { name: "Elevators", value: 35, fill: "#38bdf8" },
+        { name: "Fire System", value: 18, fill: "#f97316" },
+        { name: "Outdoor Lighting", value: 47, fill: "#facc15" },
       ],
     },
   },
 
   monthly: {
     summary: [
-      { name: "HVAC", usage: 12800, fill: "#21ff8a" },
-      { name: "Lighting", usage: 6200, fill: "#e7d84b" },
-      { name: "Floor 1", usage: 5400, fill: "#22d3ee" },
-      { name: "Floor 2", usage: 7600, fill: "#1d8fb3" },
+      { name: "Floor 1", usage: 16800, fill: "#22d3ee" },
+      { name: "Floor 2", usage: 18400, fill: "#21ff8a" },
+      { name: "Floor 3", usage: 21800, fill: "#e7d84b" },
+      { name: "Common Areas", usage: 7200, fill: "#a78bfa" },
     ],
     breakdown: {
-      HVAC: [
-        { name: "Cooling", value: 43, fill: "#8ce99a" },
-        { name: "Ventilation", value: 30, fill: "#5fd97b" },
-        { name: "Heating", value: 27, fill: "#2eb85c" },
-      ],
-      Lighting: [
-        { name: "Office Lights", value: 50, fill: "#f8e16c" },
-        { name: "Corridors", value: 30, fill: "#f1d54b" },
-        { name: "Exterior", value: 20, fill: "#dcbf1f" },
-      ],
       "Floor 1": [
-        { name: "Open Office", value: 42, fill: "#7dd3fc" },
-        { name: "Meeting Rooms", value: 33, fill: "#38bdf8" },
-        { name: "Reception", value: 25, fill: "#0ea5e9" },
+        { name: "HVAC", value: 44, fill: "#8ce99a" },
+        { name: "Lighting", value: 26, fill: "#f8e16c" },
+        { name: "Plug Loads", value: 30, fill: "#60a5fa" },
       ],
       "Floor 2": [
-        { name: "Private Offices", value: 46, fill: "#60a5fa" },
-        { name: "Labs", value: 29, fill: "#3b82f6" },
-        { name: "Common Area", value: 25, fill: "#2563eb" },
+        { name: "HVAC", value: 46, fill: "#8ce99a" },
+        { name: "Lighting", value: 25, fill: "#f8e16c" },
+        { name: "Plug Loads", value: 29, fill: "#60a5fa" },
+      ],
+      "Floor 3": [
+        { name: "HVAC", value: 32, fill: "#8ce99a" },
+        { name: "Lighting", value: 19, fill: "#f8e16c" },
+        { name: "Server Room", value: 49, fill: "#fb7185" },
+      ],
+      "Common Areas": [
+        { name: "Elevators", value: 34, fill: "#38bdf8" },
+        { name: "Fire System", value: 17, fill: "#f97316" },
+        { name: "Outdoor Lighting", value: 49, fill: "#facc15" },
       ],
     },
   },
@@ -196,7 +196,7 @@ const zoneComparisonData = {
 
 function Dashboard() {
   const [selectedView, setSelectedView] = useState("hourly");
-  const [selectedZone, setSelectedZone] = useState("HVAC");
+  const [selectedZone, setSelectedZone] = useState("Floor 1");
 
   const currentZoneSummary = zoneComparisonData[selectedView].summary;
   const currentZoneBreakdown =
@@ -405,10 +405,10 @@ function Dashboard() {
               <InsightBox title="Live Alerts">
                 <ul>
                   <li className="warning-text">
-                    High HVAC usage detected after office hours.
+                    Energy spike detected in Floor 3 Server Room.
                   </li>
-                  <li>No critical system anomaly detected.</li>
-                  <li>Real-time load is currently within the expected range.</li>
+                  <li>Lighting usage on Floor 2 is higher than expected after office hours.</li>
+                  <li>Common area systems are currently within normal range.</li>
                 </ul>
               </InsightBox>
             </div>
@@ -417,29 +417,30 @@ function Dashboard() {
           <div className="chart-panel zone-panel">
             <div className="panel-header zone-header">
               <div>
-                <h2>Zone Comparison</h2>
+                <h2>Hierarchical Zone Comparison</h2>
                 <span>
-                  {selectedView.charAt(0).toUpperCase() +
-                    selectedView.slice(1)}{" "}
-                  electricity usage by zone (kWh)
+                  {`${selectedView.charAt(0).toUpperCase() +
+                    selectedView.slice(1)} electricity usage by floor and category (kWh)`}
                 </span>
               </div>
             </div>
 
             <div className="zone-concept-layout">
               <div className="zone-main-chart-card">
-                <div className="zone-subtitle">Overall Zone Share</div>
+                <div className="zone-subtitle">Building Level Floor / Area Share</div>
 
                 <div className="zone-main-pie">
-                  <ResponsiveContainer width="100%" height={280}>
-                    <PieChart>
+                  <ResponsiveContainer width="100%" height={220}>
+                    <PieChart margin={{ top: 20, right: 20, bottom: 20, left: 20 }}>
                       <Pie
                         data={currentZoneSummary}
                         dataKey="usage"
                         nameKey="name"
-                        innerRadius={58}
-                        outerRadius={108}
-                        paddingAngle={2}
+                        cx="50%"
+                        cy="50%"
+                        innerRadius={40}
+                        outerRadius={68}
+                        paddingAngle={3}
                       >
                         {currentZoneSummary.map((entry) => (
                           <Cell
@@ -492,7 +493,7 @@ function Dashboard() {
 
               <div className="zone-breakdown-card">
                 <div className="zone-subtitle">
-                  Detailed Breakdown of {selectedZone}
+                  Functional Category Breakdown of {selectedZone}
                 </div>
 
                 <div className="zone-breakdown-content">
@@ -524,7 +525,7 @@ function Dashboard() {
                 </div>
 
                 <div className="zone-total-box">
-                  <p>{selectedZone} Total Usage</p>
+                  <p>{selectedZone} Total Energy Usage</p>
                   <h3>{selectedZoneTotal} kWh</h3>
                 </div>
               </div>

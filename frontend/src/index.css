@@ -430,6 +430,10 @@ body {
   padding: 14px;
 }
 
+.zone-main-chart-card {
+  overflow: hidden;
+}
+
 .zone-subtitle {
   color: #9fd9ea;
   font-size: 13px;
@@ -438,25 +442,31 @@ body {
 }
 
 .zone-main-pie {
-  height: 290px;
+  height: 220px;
+  width: 100%;
+  overflow: visible;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .zone-selector-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 10px;
-  margin-top: 12px;
+  gap: 9px;
+  margin-top: 8px;
 }
 
 .zone-pill {
   background: #0a1d36;
   color: #9fd9ea;
   border: 1px solid #176c8d;
-  padding: 9px 10px;
+  padding: 9px 8px;
   border-radius: 8px;
   cursor: pointer;
-  font-size: 13px;
-  font-weight: 500;
+  font-size: 12px;
+  font-weight: 600;
+  min-height: 48px;;
 }
 
 .zone-pill:hover,

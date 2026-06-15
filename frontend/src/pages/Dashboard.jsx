@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   LineChart,
   Line,
@@ -198,9 +198,91 @@ function Dashboard() {
   const [selectedView, setSelectedView] = useState("hourly");
   const [selectedZone, setSelectedZone] = useState("Floor 1");
 
-  const currentZoneSummary = zoneComparisonData[selectedView].summary;
+  const [summaryData, setSummaryData] = useState(null);
+  const [zoneApiData, setZoneApiData] = useState([]);
+
+  useEffect(() => {
+    const fetchDashboardData = async () => {
+      try {
+        const summaryResponse = await fetch(
+          "http://127.0.0.1:8000/energy/summary"
+        );
+        const zonesResponse = await fetch(
+          "http://127.0.0.1:8000/energy/zones"
+        );
+
+        const summary = await summaryResponse.json();
+        const zones = await zonesResponse.json();
+
+        setSummaryData(summary);
+        setZoneApiData(zones);
+      } catch (error) {
+        console.error("Error fetching dashboard data:", error);
+      }
+    };
+
+    fetchDashboardData();
+  }, []);
+
+  const floorColors = {
+    "Floor 1": "#22d3ee",
+    "Floor 2": "#21ff8a",
+    "Floor 3": "#e7d84b",
+    "Common Areas": "#a78bfa",
+  };
+
+  const categoryColors = {
+    HVAC: "#8ce99a",
+    Lighting: "#f8e16c",
+    "Plug Loads": "#60a5fa",
+    "Server Room": "#fb7185",
+    Elevators: "#38bdf8",
+    "Fire System": "#f97316",
+    "Outdoor Lighting": "#facc15",
+  };
+
+  const buildZoneSummary = () => {
+    const floorTotals = {};
+
+    zoneApiData.forEach((item) => {
+      floorTotals[item.floor_area] =
+        (floorTotals[item.floor_area] || 0) + Number(item.total_kwh);
+    });
+
+    return Object.keys(floorTotals).map((floor) => ({
+      name: floor,
+      usage: Number(floorTotals[floor].toFixed(2)),
+      fill: floorColors[floor] || "#22d3ee",
+    }));
+  };
+
+  const buildCategoryBreakdown = (floor) => {
+    const categories = zoneApiData.filter((item) => item.floor_area === floor);
+    const total = categories.reduce(
+      (sum, item) => sum + Number(item.total_kwh),
+      0
+    );
+
+    if (total === 0) {
+      return [];
+    }
+
+    return categories.map((item) => ({
+      name: item.category,
+      value: Number(((Number(item.total_kwh) / total) * 100).toFixed(0)),
+      fill: categoryColors[item.category] || "#22d3ee",
+    }));
+  };
+
+  const currentZoneSummary =
+    zoneApiData.length > 0
+      ? buildZoneSummary()
+      : zoneComparisonData[selectedView].summary;
+
   const currentZoneBreakdown =
-    zoneComparisonData[selectedView].breakdown[selectedZone];
+    zoneApiData.length > 0
+      ? buildCategoryBreakdown(selectedZone)
+      : zoneComparisonData[selectedView].breakdown[selectedZone];
 
   const selectedZoneTotal =
     currentZoneSummary.find((item) => item.name === selectedZone)?.usage || 0;
@@ -218,33 +300,44 @@ function Dashboard() {
               Commercial building electricity consumption monitoring and insights
             </p>
           </div>
-
           <button className="export-button">Export Report</button>
         </div>
 
         <section className="summary-grid">
           <SummaryCard
             title="Total Energy Usage"
-            value="1,250 kWh"
-            note="Weekly building consumption"
+            value={
+              summaryData
+                ? `${Number(summaryData.total_kwh).toFixed(2)} kWh`
+                : "Loading..."
+            }
+            note="Total building consumption"
           />
 
           <SummaryCard
-            title="Peak Usage Zone"
-            value="HVAC"
-            note="Highest consuming system"
+            title="Total Records"
+            value={summaryData ? summaryData.total_records : "Loading..."}
+            note="Energy data readings"
           />
 
           <SummaryCard
-            title="Predicted Usage"
-            value="1,320 kWh"
-            note="Expected next week"
+            title="Average Usage"
+            value={
+              summaryData
+                ? `${Number(summaryData.avg_kwh).toFixed(2)} kWh`
+                : "Loading..."
+            }
+            note="Average reading value"
           />
 
           <SummaryCard
-            title="Estimated Cost"
-            value="€245"
-            note="Based on sample tariff"
+            title="Peak Usage"
+            value={
+              summaryData
+                ? `${Number(summaryData.peak_kwh).toFixed(2)} kWh`
+                : "Loading..."
+            }
+            note="Highest recorded value"
           />
         </section>
 
@@ -256,9 +349,10 @@ function Dashboard() {
                   <div>
                     <h2>Energy Usage Trend</h2>
                     <span>
-                      {selectedView.charAt(0).toUpperCase() +
-                        selectedView.slice(1)}{" "}
-                      electricity usage (kWh)
+                      {`${
+                        selectedView.charAt(0).toUpperCase() +
+                        selectedView.slice(1)
+                      } electricity usage (kWh)`}
                     </span>
                   </div>
 
@@ -293,7 +387,10 @@ function Dashboard() {
                         />
                       </YAxis>
                       <Tooltip
-                        formatter={(value) => [`${value} kWh`, "Energy Usage"]}
+                        formatter={(value) => [
+                          `${value} kWh`,
+                          "Energy Usage",
+                        ]}
                         contentStyle={{
                           backgroundColor: "#0a1d36",
                           border: "1px solid #22d3ee",
@@ -355,11 +452,9 @@ function Dashboard() {
                           />
                         </linearGradient>
                       </defs>
-
                       <CartesianGrid stroke="#143c4d" strokeDasharray="3 3" />
                       <XAxis dataKey="time" hide />
                       <YAxis hide />
-
                       <Tooltip
                         formatter={(value) => [`${value} kW`, "Live Load"]}
                         contentStyle={{
@@ -369,7 +464,6 @@ function Dashboard() {
                         }}
                         labelStyle={{ color: "#ffffff" }}
                       />
-
                       <Area
                         type="monotone"
                         dataKey="load"
@@ -382,7 +476,6 @@ function Dashboard() {
                       />
                     </AreaChart>
                   </ResponsiveContainer>
-
                   <div className="scanning-line"></div>
                 </div>
 
@@ -396,9 +489,16 @@ function Dashboard() {
             <div className="bottom-insights-grid">
               <InsightBox title="AI Insights">
                 <ul>
-                  <li>HVAC system has the highest energy usage this week.</li>
-                  <li>Consumption increases mainly during working hours.</li>
-                  <li>Next week usage is expected to increase slightly.</li>
+                  <li>
+                    Floor 3 shows high energy usage due to server room
+                    consumption.
+                  </li>
+                  <li>
+                    HVAC and lighting loads increase mainly during working hours.
+                  </li>
+                  <li>
+                    Common area outdoor lighting can be optimized during daytime.
+                  </li>
                 </ul>
               </InsightBox>
 
@@ -407,7 +507,10 @@ function Dashboard() {
                   <li className="warning-text">
                     Energy spike detected in Floor 3 Server Room.
                   </li>
-                  <li>Lighting usage on Floor 2 is higher than expected after office hours.</li>
+                  <li>
+                    Lighting usage on Floor 2 is higher than expected after
+                    office hours.
+                  </li>
                   <li>Common area systems are currently within normal range.</li>
                 </ul>
               </InsightBox>
@@ -419,19 +522,24 @@ function Dashboard() {
               <div>
                 <h2>Hierarchical Zone Comparison</h2>
                 <span>
-                  {`${selectedView.charAt(0).toUpperCase() +
-                    selectedView.slice(1)} electricity usage by floor and category (kWh)`}
+                  {`${
+                    selectedView.charAt(0).toUpperCase() + selectedView.slice(1)
+                  } electricity usage by floor and category (kWh)`}
                 </span>
               </div>
             </div>
 
             <div className="zone-concept-layout">
               <div className="zone-main-chart-card">
-                <div className="zone-subtitle">Building Level Floor / Area Share</div>
+                <div className="zone-subtitle">
+                  Building Level Floor / Area Share
+                </div>
 
                 <div className="zone-main-pie">
-                  <ResponsiveContainer width="100%" height={220}>
-                    <PieChart margin={{ top: 20, right: 20, bottom: 20, left: 20 }}>
+                  <ResponsiveContainer width="100%" height={210}>
+                    <PieChart
+                      margin={{ top: 20, right: 20, bottom: 20, left: 20 }}
+                    >
                       <Pie
                         data={currentZoneSummary}
                         dataKey="usage"
@@ -457,12 +565,8 @@ function Dashboard() {
                           />
                         ))}
                       </Pie>
-
                       <Tooltip
-                        formatter={(value) => [
-                          `${value} kWh`,
-                          "Zone Usage",
-                        ]}
+                        formatter={(value) => [`${value} kWh`, "Area Usage"]}
                         contentStyle={{
                           backgroundColor: "#0a1d36",
                           border: "1px solid #22d3ee",

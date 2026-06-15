@@ -295,13 +295,13 @@ function Dashboard() {
       ? backendDailyChartData
       : chartData[selectedView] || [];
 
-  const currentZoneSummary =
-    zoneApiData.length > 0
+  const useBackendZoneData = selectedView === "daily" && zoneApiData.length > 0;
+
+  const currentZoneSummary = useBackendZoneData
       ? buildZoneSummary()
       : zoneComparisonData[selectedView].summary;
 
-  const currentZoneBreakdown =
-    zoneApiData.length > 0
+  const currentZoneBreakdown = useBackendZoneData
       ? buildCategoryBreakdown(selectedZone)
       : zoneComparisonData[selectedView].breakdown[selectedZone];
 

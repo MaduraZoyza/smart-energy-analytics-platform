@@ -200,6 +200,7 @@ function Dashboard() {
 
   const [summaryData, setSummaryData] = useState(null);
   const [zoneApiData, setZoneApiData] = useState([]);
+  const [dailyApiData, setDailyApiData] = useState([]);
 
   useEffect(() => {
     const fetchDashboardData = async () => {
@@ -207,15 +208,22 @@ function Dashboard() {
         const summaryResponse = await fetch(
           "http://127.0.0.1:8000/energy/summary"
         );
+
         const zonesResponse = await fetch(
           "http://127.0.0.1:8000/energy/zones"
         );
 
+        const dailyResponse = await fetch(
+          "http://127.0.0.1:8000/energy/daily"
+        );
+
         const summary = await summaryResponse.json();
         const zones = await zonesResponse.json();
+        const daily = await dailyResponse.json();
 
         setSummaryData(summary);
         setZoneApiData(zones);
+        setDailyApiData(daily);
       } catch (error) {
         console.error("Error fetching dashboard data:", error);
       }
@@ -258,6 +266,7 @@ function Dashboard() {
 
   const buildCategoryBreakdown = (floor) => {
     const categories = zoneApiData.filter((item) => item.floor_area === floor);
+
     const total = categories.reduce(
       (sum, item) => sum + Number(item.total_kwh),
       0
@@ -273,6 +282,18 @@ function Dashboard() {
       fill: categoryColors[item.category] || "#22d3ee",
     }));
   };
+
+  const backendDailyChartData = Array.isArray(dailyApiData)
+    ? dailyApiData.map((item) => ({
+        time: item.date ? item.date.slice(5) : "N/A",
+        usage: Number(item.total_kwh) || 0,
+      }))
+    : [];
+
+  const activeTrendData =
+    selectedView === "daily" && backendDailyChartData.length > 0
+      ? backendDailyChartData
+      : chartData[selectedView] || [];
 
   const currentZoneSummary =
     zoneApiData.length > 0
@@ -300,6 +321,7 @@ function Dashboard() {
               Commercial building electricity consumption monitoring and insights
             </p>
           </div>
+
           <button className="export-button">Export Report</button>
         </div>
 
@@ -375,9 +397,11 @@ function Dashboard() {
 
                 <div className="real-chart">
                   <ResponsiveContainer width="100%" height={280}>
-                    <LineChart data={chartData[selectedView]}>
+                    <LineChart data={activeTrendData}>
                       <CartesianGrid stroke="#145c7a" strokeDasharray="3 3" />
+
                       <XAxis dataKey="time" stroke="#9fd9ea" />
+
                       <YAxis stroke="#9fd9ea">
                         <Label
                           value="Energy Usage (kWh)"
@@ -386,9 +410,10 @@ function Dashboard() {
                           style={{ fill: "#9fd9ea", fontSize: 13 }}
                         />
                       </YAxis>
+
                       <Tooltip
                         formatter={(value) => [
-                          `${value} kWh`,
+                          `${Number(value).toFixed(2)} kWh`,
                           "Energy Usage",
                         ]}
                         contentStyle={{
@@ -398,6 +423,7 @@ function Dashboard() {
                         }}
                         labelStyle={{ color: "#ffffff" }}
                       />
+
                       <Line
                         type="monotone"
                         dataKey="usage"
@@ -452,9 +478,11 @@ function Dashboard() {
                           />
                         </linearGradient>
                       </defs>
+
                       <CartesianGrid stroke="#143c4d" strokeDasharray="3 3" />
                       <XAxis dataKey="time" hide />
                       <YAxis hide />
+
                       <Tooltip
                         formatter={(value) => [`${value} kW`, "Live Load"]}
                         contentStyle={{
@@ -464,6 +492,7 @@ function Dashboard() {
                         }}
                         labelStyle={{ color: "#ffffff" }}
                       />
+
                       <Area
                         type="monotone"
                         dataKey="load"
@@ -476,6 +505,7 @@ function Dashboard() {
                       />
                     </AreaChart>
                   </ResponsiveContainer>
+
                   <div className="scanning-line"></div>
                 </div>
 
@@ -565,6 +595,7 @@ function Dashboard() {
                           />
                         ))}
                       </Pie>
+
                       <Tooltip
                         formatter={(value) => [`${value} kWh`, "Area Usage"]}
                         contentStyle={{

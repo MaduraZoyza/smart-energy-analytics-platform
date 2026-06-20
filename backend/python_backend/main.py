@@ -64,3 +64,106 @@ def get_daily():
     rows = cur.fetchall()
     conn.close()
     return list(rows)
+
+@app.get("/energy/hourly")
+def get_hourly():
+    conn = get_db()
+    cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+    cur.execute("""
+        SELECT EXTRACT(HOUR FROM timestamp)::int as hour,
+               ROUND(AVG(energy_kwh)::numeric, 2) as avg_kwh,
+               ROUND(SUM(energy_kwh)::numeric, 2) as total_kwh
+        FROM energy_readings
+        GROUP BY EXTRACT(HOUR FROM timestamp)
+        ORDER BY hour
+    """)
+    rows = cur.fetchall()
+    conn.close()
+    return list(rows)
+
+@app.get("/energy/weekly")
+def get_weekly():
+    conn = get_db()
+    cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+    cur.execute("""
+        SELECT DATE_TRUNC('week', timestamp)::date as week_start,
+               ROUND(SUM(energy_kwh)::numeric, 2) as total_kwh
+        FROM energy_readings
+        GROUP BY DATE_TRUNC('week', timestamp)
+        ORDER BY week_start
+    """)
+    rows = cur.fetchall()
+    conn.close()
+    return list(rows)
+
+@app.get("/energy/monthly")
+def get_monthly():
+    conn = get_db()
+    cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+    cur.execute("""
+        SELECT DATE_TRUNC('month', timestamp)::date as month_start,
+               ROUND(SUM(energy_kwh)::numeric, 2) as total_kwh
+        FROM energy_readings
+        GROUP BY DATE_TRUNC('month', timestamp)
+        ORDER BY month_start
+    """)
+    rows = cur.fetchall()
+    conn.close()
+    return list(rows)
+
+@app.get("/energy/time-periods")
+def get_time_periods():
+    conn = get_db()
+    cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+    cur.execute("""
+        SELECT time_period,
+               ROUND(AVG(energy_kwh)::numeric, 2) as avg_kwh,
+               ROUND(SUM(energy_kwh)::numeric, 2) as total_kwh,
+               COUNT(*) as reading_count
+        FROM energy_readings
+        GROUP BY time_period
+        ORDER BY MIN(timestamp)
+    """)
+    rows = cur.fetchall()
+    conn.close()
+    return list(rows)
+
+@app.get("/energy/ai-context")
+def get_ai_context():
+    conn = get_db()
+    cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+
+    cur.execute("SELECT COUNT(*) as total_records, ROUND(SUM(energy_kwh)::numeric, 2) as total_kwh, ROUND(AVG(energy_kwh)::numeric, 2) as avg_kwh, ROUND(MAX(energy_kwh)::numeric, 2) as peak_kwh FROM energy_readings")
+    summary = dict(cur.fetchone())
+
+    cur.execute("""
+        SELECT floor_area, category, ROUND(SUM(energy_kwh)::numeric, 2) as total_kwh
+        FROM energy_readings
+        GROUP BY floor_area, category
+        ORDER BY total_kwh DESC
+        LIMIT 5
+    """)
+    top_consumers = list(cur.fetchall())
+
+    cur.execute("""
+        SELECT time_period, ROUND(AVG(energy_kwh)::numeric, 2) as avg_kwh
+        FROM energy_readings
+        GROUP BY time_period
+        ORDER BY avg_kwh DESC
+    """)
+    time_period_ranking = list(cur.fetchall())
+
+    cur.execute("""
+        SELECT is_weekend, ROUND(AVG(energy_kwh)::numeric, 2) as avg_kwh
+        FROM energy_readings
+        GROUP BY is_weekend
+    """)
+    weekend_vs_weekday = list(cur.fetchall())
+
+    conn.close()
+    return {
+        "summary": summary,
+        "top_consuming_zones": top_consumers,
+        "time_period_ranking": time_period_ranking,
+        "weekend_vs_weekday": weekend_vs_weekday
+    }

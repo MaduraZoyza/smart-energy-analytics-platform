@@ -68,139 +68,16 @@ const liveFluctuationData = [
   { time: "10", load: 84 },
 ];
 
-const zoneComparisonData = {
-  hourly: {
-    summary: [
-      { name: "Floor 1", usage: 88, fill: "#22d3ee" },
-      { name: "Floor 2", usage: 94, fill: "#21ff8a" },
-      { name: "Floor 3", usage: 118, fill: "#e7d84b" },
-      { name: "Common Areas", usage: 42, fill: "#a78bfa" },
-    ],
-    breakdown: {
-      "Floor 1": [
-        { name: "HVAC", value: 45, fill: "#8ce99a" },
-        { name: "Lighting", value: 25, fill: "#f8e16c" },
-        { name: "Plug Loads", value: 30, fill: "#60a5fa" },
-      ],
-      "Floor 2": [
-        { name: "HVAC", value: 48, fill: "#8ce99a" },
-        { name: "Lighting", value: 24, fill: "#f8e16c" },
-        { name: "Plug Loads", value: 28, fill: "#60a5fa" },
-      ],
-      "Floor 3": [
-        { name: "HVAC", value: 35, fill: "#8ce99a" },
-        { name: "Lighting", value: 20, fill: "#f8e16c" },
-        { name: "Server Room", value: 45, fill: "#fb7185" },
-      ],
-      "Common Areas": [
-        { name: "Elevators", value: 35, fill: "#38bdf8" },
-        { name: "Fire System", value: 20, fill: "#f97316" },
-        { name: "Outdoor Lighting", value: 45, fill: "#facc15" },
-      ],
-    },
-  },
-
-  daily: {
-    summary: [
-      { name: "Floor 1", usage: 620, fill: "#22d3ee" },
-      { name: "Floor 2", usage: 690, fill: "#21ff8a" },
-      { name: "Floor 3", usage: 810, fill: "#e7d84b" },
-      { name: "Common Areas", usage: 280, fill: "#a78bfa" },
-    ],
-    breakdown: {
-      "Floor 1": [
-        { name: "HVAC", value: 44, fill: "#8ce99a" },
-        { name: "Lighting", value: 26, fill: "#f8e16c" },
-        { name: "Plug Loads", value: 30, fill: "#60a5fa" },
-      ],
-      "Floor 2": [
-        { name: "HVAC", value: 47, fill: "#8ce99a" },
-        { name: "Lighting", value: 25, fill: "#f8e16c" },
-        { name: "Plug Loads", value: 28, fill: "#60a5fa" },
-      ],
-      "Floor 3": [
-        { name: "HVAC", value: 34, fill: "#8ce99a" },
-        { name: "Lighting", value: 19, fill: "#f8e16c" },
-        { name: "Server Room", value: 47, fill: "#fb7185" },
-      ],
-      "Common Areas": [
-        { name: "Elevators", value: 34, fill: "#38bdf8" },
-        { name: "Fire System", value: 18, fill: "#f97316" },
-        { name: "Outdoor Lighting", value: 48, fill: "#facc15" },
-      ],
-    },
-  },
-
-  weekly: {
-    summary: [
-      { name: "Floor 1", usage: 4200, fill: "#22d3ee" },
-      { name: "Floor 2", usage: 4650, fill: "#21ff8a" },
-      { name: "Floor 3", usage: 5400, fill: "#e7d84b" },
-      { name: "Common Areas", usage: 1800, fill: "#a78bfa" },
-    ],
-    breakdown: {
-      "Floor 1": [
-        { name: "HVAC", value: 43, fill: "#8ce99a" },
-        { name: "Lighting", value: 27, fill: "#f8e16c" },
-        { name: "Plug Loads", value: 30, fill: "#60a5fa" },
-      ],
-      "Floor 2": [
-        { name: "HVAC", value: 46, fill: "#8ce99a" },
-        { name: "Lighting", value: 25, fill: "#f8e16c" },
-        { name: "Plug Loads", value: 29, fill: "#60a5fa" },
-      ],
-      "Floor 3": [
-        { name: "HVAC", value: 33, fill: "#8ce99a" },
-        { name: "Lighting", value: 20, fill: "#f8e16c" },
-        { name: "Server Room", value: 47, fill: "#fb7185" },
-      ],
-      "Common Areas": [
-        { name: "Elevators", value: 35, fill: "#38bdf8" },
-        { name: "Fire System", value: 18, fill: "#f97316" },
-        { name: "Outdoor Lighting", value: 47, fill: "#facc15" },
-      ],
-    },
-  },
-
-  monthly: {
-    summary: [
-      { name: "Floor 1", usage: 16800, fill: "#22d3ee" },
-      { name: "Floor 2", usage: 18400, fill: "#21ff8a" },
-      { name: "Floor 3", usage: 21800, fill: "#e7d84b" },
-      { name: "Common Areas", usage: 7200, fill: "#a78bfa" },
-    ],
-    breakdown: {
-      "Floor 1": [
-        { name: "HVAC", value: 44, fill: "#8ce99a" },
-        { name: "Lighting", value: 26, fill: "#f8e16c" },
-        { name: "Plug Loads", value: 30, fill: "#60a5fa" },
-      ],
-      "Floor 2": [
-        { name: "HVAC", value: 46, fill: "#8ce99a" },
-        { name: "Lighting", value: 25, fill: "#f8e16c" },
-        { name: "Plug Loads", value: 29, fill: "#60a5fa" },
-      ],
-      "Floor 3": [
-        { name: "HVAC", value: 32, fill: "#8ce99a" },
-        { name: "Lighting", value: 19, fill: "#f8e16c" },
-        { name: "Server Room", value: 49, fill: "#fb7185" },
-      ],
-      "Common Areas": [
-        { name: "Elevators", value: 34, fill: "#38bdf8" },
-        { name: "Fire System", value: 17, fill: "#f97316" },
-        { name: "Outdoor Lighting", value: 49, fill: "#facc15" },
-      ],
-    },
-  },
-};
-
 function Dashboard() {
-  const [selectedView, setSelectedView] = useState("hourly");
+  const [selectedView, setSelectedView] = useState("daily");
   const [selectedZone, setSelectedZone] = useState("Floor 1");
 
   const [summaryData, setSummaryData] = useState(null);
   const [zoneApiData, setZoneApiData] = useState([]);
   const [dailyApiData, setDailyApiData] = useState([]);
+  const [hourlyApiData, setHourlyApiData] = useState([]);
+  const [weeklyApiData, setWeeklyApiData] = useState([]);
+  const [monthlyApiData, setMonthlyApiData] = useState([]);
 
   useEffect(() => {
     const fetchDashboardData = async () => {
@@ -217,13 +94,31 @@ function Dashboard() {
           "http://127.0.0.1:8000/energy/daily"
         );
 
+        const hourlyResponse = await fetch(
+          "http://127.0.0.1:8000/energy/hourly"
+        );
+
+        const weeklyResponse = await fetch(
+          "http://127.0.0.1:8000/energy/weekly"
+        );
+
+        const monthlyResponse = await fetch(
+          "http://127.0.0.1:8000/energy/monthly"
+        );
+
         const summary = await summaryResponse.json();
         const zones = await zonesResponse.json();
         const daily = await dailyResponse.json();
+        const hourly = await hourlyResponse.json();
+        const weekly = await weeklyResponse.json();
+        const monthly = await monthlyResponse.json();
 
         setSummaryData(summary);
         setZoneApiData(zones);
         setDailyApiData(daily);
+        setHourlyApiData(hourly);
+        setWeeklyApiData(weekly);
+        setMonthlyApiData(monthly);
       } catch (error) {
         console.error("Error fetching dashboard data:", error);
       }
@@ -236,20 +131,35 @@ function Dashboard() {
     "Floor 1": "#22d3ee",
     "Floor 2": "#21ff8a",
     "Floor 3": "#e7d84b",
-    "Common Areas": "#a78bfa",
+    "Floor 4": "#fb7185",
+    "Common Building Services": "#a78bfa",
   };
 
   const categoryColors = {
+    "Laboratory Equipment": "#38bdf8",
     HVAC: "#8ce99a",
-    Lighting: "#f8e16c",
-    "Plug Loads": "#60a5fa",
+    "Work Area Lighting": "#f8e16c",
+    "Circulation and Lobby Lighting": "#facc15",
+    "Plug Load": "#60a5fa",
+    "IT / Computer Lab Equipment": "#818cf8",
+    "Smart Lab / Studio Equipment": "#a78bfa",
     "Server Room": "#fb7185",
-    Elevators: "#38bdf8",
-    "Fire System": "#f97316",
-    "Outdoor Lighting": "#facc15",
+    "IT Infrastructure": "#22d3ee",
+    Elevator: "#34d399",
+    "Fire and Safety": "#f97316",
+    "Outdoor Lighting": "#fde047",
+    "ELV / Network System": "#c084fc",
   };
 
   const buildZoneSummary = () => {
+    const floorOrder = [
+      "Floor 1",
+      "Floor 2",
+      "Floor 3",
+      "Floor 4",
+      "Common Building Services",
+    ];
+
     const floorTotals = {};
 
     zoneApiData.forEach((item) => {
@@ -257,11 +167,13 @@ function Dashboard() {
         (floorTotals[item.floor_area] || 0) + Number(item.total_kwh);
     });
 
-    return Object.keys(floorTotals).map((floor) => ({
-      name: floor,
-      usage: Number(floorTotals[floor].toFixed(2)),
-      fill: floorColors[floor] || "#22d3ee",
-    }));
+    return floorOrder
+      .filter((floor) => floorTotals[floor])
+      .map((floor) => ({
+        name: floor,
+        usage: Number(floorTotals[floor].toFixed(2)),
+        fill: floorColors[floor] || "#22d3ee",
+      }));
   };
 
   const buildCategoryBreakdown = (floor) => {
@@ -278,10 +190,23 @@ function Dashboard() {
 
     return categories.map((item) => ({
       name: item.category,
-      value: Number(((Number(item.total_kwh) / total) * 100).toFixed(0)),
+      value: Number(((Number(item.total_kwh) / total) * 100).toFixed(1)),
+      kwh: Number(Number(item.total_kwh).toFixed(2)),
       fill: categoryColors[item.category] || "#22d3ee",
     }));
   };
+
+  const backendHourlyChartData = Array.isArray(hourlyApiData)
+    ? hourlyApiData.map((item) => ({
+        time:
+          item.time ||
+          item.hour_label ||
+          (item.hour !== undefined
+            ? `${String(item.hour).padStart(2, "0")}:00`
+            : "N/A"),
+        usage: Number(item.total_kwh) || 0,
+      }))
+    : [];
 
   const backendDailyChartData = Array.isArray(dailyApiData)
     ? dailyApiData.map((item) => ({
@@ -290,20 +215,48 @@ function Dashboard() {
       }))
     : [];
 
+  const backendWeeklyChartData = Array.isArray(weeklyApiData)
+    ? weeklyApiData.map((item, index) => ({
+        time:
+          item.week ||
+          item.week_label ||
+          (item.week_start ? `Week ${index + 1}` : `Week ${index + 1}`),
+        usage: Number(item.total_kwh) || 0,
+      }))
+    : [];
+
+  const juneRealTotal =
+    Array.isArray(monthlyApiData) && monthlyApiData.length > 0
+      ? Number(monthlyApiData[0].total_kwh)
+      : 0;
+
+  const backendMonthlyChartData = [
+    { time: "Jan", usage: 28800 },
+    { time: "Feb", usage: 27100 },
+    { time: "Mar", usage: 29500 },
+    { time: "Apr", usage: 30600 },
+    { time: "May", usage: 31800 },
+    {
+      time: "Jun",
+      usage: juneRealTotal > 0 ? juneRealTotal : 0,
+    },
+  ];
+
   const activeTrendData =
-    selectedView === "daily" && backendDailyChartData.length > 0
+    selectedView === "hourly" && backendHourlyChartData.length > 0
+      ? backendHourlyChartData
+      : selectedView === "daily" && backendDailyChartData.length > 0
       ? backendDailyChartData
+      : selectedView === "weekly" && backendWeeklyChartData.length > 0
+      ? backendWeeklyChartData
+      : selectedView === "monthly"
+      ? backendMonthlyChartData
       : chartData[selectedView] || [];
 
-  const useBackendZoneData = selectedView === "daily" && zoneApiData.length > 0;
+  const currentZoneSummary = zoneApiData.length > 0 ? buildZoneSummary() : [];
 
-  const currentZoneSummary = useBackendZoneData
-      ? buildZoneSummary()
-      : zoneComparisonData[selectedView].summary;
-
-  const currentZoneBreakdown = useBackendZoneData
-      ? buildCategoryBreakdown(selectedZone)
-      : zoneComparisonData[selectedView].breakdown[selectedZone];
+  const currentZoneBreakdown =
+    zoneApiData.length > 0 ? buildCategoryBreakdown(selectedZone) : [];
 
   const selectedZoneTotal =
     currentZoneSummary.find((item) => item.name === selectedZone)?.usage || 0;
@@ -318,7 +271,8 @@ function Dashboard() {
             <p className="eyebrow">AI-Driven Energy Intelligence</p>
             <h1>Smart Energy Analytics Dashboard</h1>
             <p className="header-subtitle">
-              Commercial building electricity consumption monitoring and insights
+              Academic and Laboratory Building electricity consumption monitoring
+              and insights
             </p>
           </div>
 
@@ -371,10 +325,12 @@ function Dashboard() {
                   <div>
                     <h2>Energy Usage Trend</h2>
                     <span>
-                      {`${
-                        selectedView.charAt(0).toUpperCase() +
-                        selectedView.slice(1)
-                      } electricity usage (kWh)`}
+                      {selectedView === "monthly"
+                        ? "Monthly overview: Jan–May sample values, June from backend data"
+                        : `${
+                            selectedView.charAt(0).toUpperCase() +
+                            selectedView.slice(1)
+                          } electricity usage from backend data`}
                     </span>
                   </div>
 
@@ -520,14 +476,16 @@ function Dashboard() {
               <InsightBox title="AI Insights">
                 <ul>
                   <li>
-                    Floor 3 shows high energy usage due to server room
-                    consumption.
+                    Floor 4 shows continuous energy usage because the server
+                    room and IT infrastructure operate throughout the day.
                   </li>
                   <li>
-                    HVAC and lighting loads increase mainly during working hours.
+                    HVAC and work area lighting loads increase mainly during
+                    working hours.
                   </li>
                   <li>
-                    Common area outdoor lighting can be optimized during daytime.
+                    Common building services show continuous baseline energy
+                    usage for safety, ELV, elevator, and outdoor lighting systems.
                   </li>
                 </ul>
               </InsightBox>
@@ -535,13 +493,17 @@ function Dashboard() {
               <InsightBox title="Live Alerts">
                 <ul>
                   <li className="warning-text">
-                    Energy spike detected in Floor 3 Server Room.
+                    High energy consumption detected in Floor 4 server and IT
+                    infrastructure area.
                   </li>
                   <li>
-                    Lighting usage on Floor 2 is higher than expected after
-                    office hours.
+                    Work area lighting and plug loads are expected to reduce
+                    after normal working hours.
                   </li>
-                  <li>Common area systems are currently within normal range.</li>
+                  <li>
+                    Fire and safety systems are operating as continuous essential
+                    building loads.
+                  </li>
                 </ul>
               </InsightBox>
             </div>
@@ -552,21 +514,26 @@ function Dashboard() {
               <div>
                 <h2>Hierarchical Zone Comparison</h2>
                 <span>
-                  {`${
-                    selectedView.charAt(0).toUpperCase() + selectedView.slice(1)
-                  } electricity usage by floor and category (kWh)`}
+                  June 2026 total electricity usage by floor and category (kWh)
                 </span>
               </div>
             </div>
 
-            <div className="zone-concept-layout">
-              <div className="zone-main-chart-card">
-                <div className="zone-subtitle">
-                  Building Level Floor / Area Share
+            <div className="zone-concept-layout updated-zone-layout">
+              <div className="zone-main-chart-card equal-zone-card">
+                <div className="zone-card-top">
+                  <div>
+                    <div className="zone-subtitle">
+                      Building Level Floor / Area Share
+                    </div>
+                    <p className="zone-small-text">
+                      Energy share by floor/service area.
+                    </p>
+                  </div>
                 </div>
 
                 <div className="zone-main-pie">
-                  <ResponsiveContainer width="100%" height={210}>
+                  <ResponsiveContainer width="100%" height={240}>
                     <PieChart
                       margin={{ top: 20, right: 20, bottom: 20, left: 20 }}
                     >
@@ -576,8 +543,8 @@ function Dashboard() {
                         nameKey="name"
                         cx="50%"
                         cy="50%"
-                        innerRadius={40}
-                        outerRadius={68}
+                        innerRadius={48}
+                        outerRadius={78}
                         paddingAngle={3}
                       >
                         {currentZoneSummary.map((entry) => (
@@ -597,7 +564,10 @@ function Dashboard() {
                       </Pie>
 
                       <Tooltip
-                        formatter={(value) => [`${value} kWh`, "Area Usage"]}
+                        formatter={(value) => [
+                          `${Number(value).toFixed(2)} kWh`,
+                          "Total Usage",
+                        ]}
                         contentStyle={{
                           backgroundColor: "#0a1d36",
                           border: "1px solid #22d3ee",
@@ -609,59 +579,70 @@ function Dashboard() {
                   </ResponsiveContainer>
                 </div>
 
-                <div className="zone-selector-row">
+                <div className="zone-legend-list">
                   {currentZoneSummary.map((zone) => (
                     <button
                       key={zone.name}
                       className={
                         selectedZone === zone.name
-                          ? "zone-pill active-zone-pill"
-                          : "zone-pill"
+                          ? "zone-legend-item active-zone-legend"
+                          : "zone-legend-item"
                       }
                       onClick={() => setSelectedZone(zone.name)}
                     >
-                      {zone.name}
+                      <span style={{ backgroundColor: zone.fill }}></span>
+                      <b>{zone.name}</b>
+                      <strong>{Number(zone.usage).toFixed(2)} kWh</strong>
                     </button>
                   ))}
                 </div>
               </div>
 
-              <div className="zone-breakdown-card">
-                <div className="zone-subtitle">
-                  Functional Category Breakdown of {selectedZone}
+              <div className="zone-breakdown-card equal-zone-card">
+                <div className="zone-card-top">
+                  <div>
+                    <div className="zone-subtitle">
+                      Functional Category Breakdown
+                    </div>
+                    <p className="zone-small-text">Energy use by category.</p>
+                  </div>
                 </div>
 
-                <div className="zone-breakdown-content">
-                  <div className="breakdown-stack">
-                    {currentZoneBreakdown.map((item) => (
-                      <div
-                        key={item.name}
-                        className="breakdown-segment"
-                        style={{
-                          height: `${item.value}%`,
-                          backgroundColor: item.fill,
-                        }}
-                        title={`${item.name}: ${item.value}%`}
-                      >
-                        <span>{item.value}%</span>
-                      </div>
-                    ))}
-                  </div>
+                <div className="selected-area-box">
+                  <span>Selected Area</span>
+                  <strong>{selectedZone}</strong>
+                </div>
 
-                  <div className="breakdown-labels">
-                    {currentZoneBreakdown.map((item) => (
-                      <div key={item.name} className="breakdown-label-item">
-                        <b style={{ backgroundColor: item.fill }}></b>
+                <div className="category-bar-list">
+                  {currentZoneBreakdown.map((item) => (
+                    <div key={item.name} className="category-bar-item">
+                      <div className="category-bar-header">
                         <span>{item.name}</span>
-                        <strong>{item.value}%</strong>
+                        <strong>{Number(item.value).toFixed(1)}%</strong>
                       </div>
-                    ))}
-                  </div>
+
+                      <div className="category-bar-track">
+                        <div
+                          className="category-bar-fill"
+                          style={{
+                            width: `${item.value}%`,
+                            backgroundColor: item.fill,
+                          }}
+                        ></div>
+                      </div>
+
+                      <div className="category-kwh-value">
+                        {Number.isFinite(Number(item.kwh))
+                          ? `${Number(item.kwh).toFixed(2)} kWh`
+                          : "0.00 kWh"}
+                      </div>
+                    </div>
+                  ))}
                 </div>
 
                 <div className="zone-total-box">
                   <p>{selectedZone} Total Energy Usage</p>
-                  <h3>{selectedZoneTotal} kWh</h3>
+                  <h3>{Number(selectedZoneTotal).toFixed(2)} kWh</h3>
                 </div>
               </div>
             </div>

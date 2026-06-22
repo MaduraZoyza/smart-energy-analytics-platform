@@ -594,3 +594,185 @@ body {
     gap: 14px;
   }
 }
+
+.updated-zone-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  align-items: stretch;
+}
+
+.equal-zone-card {
+  width: 100%;
+  min-height: 520px;
+  background: rgba(8, 27, 51, 0.88);
+  border: 1px solid rgba(34, 211, 238, 0.25);
+  border-radius: 20px;
+  padding: 18px;
+  overflow: hidden;
+}
+
+.zone-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 14px;
+  margin-bottom: 12px;
+}
+
+.zone-small-text {
+  margin: 6px 0 0;
+  color: #9fd9ea;
+  font-size: 0.82rem;
+  line-height: 1.4;
+}
+
+.zone-dropdown {
+   min-width: 160px;
+  max-width: 190px;
+  background: #071b33;
+  color: #ffffff;
+  border: 1px solid rgba(34, 211, 238, 0.6);
+  border-radius: 10px;
+  padding: 9px 12px;
+  outline: none;
+  font-size: 0.85rem;
+}
+
+.zone-dropdown:focus {
+  border-color: #21ff8a;
+  box-shadow: 0 0 0 2px rgba(33, 255, 138, 0.18);
+}
+
+.zone-legend-list {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  margin-top: 8px;
+}
+
+.zone-legend-item {
+  display: grid;
+  grid-template-columns: 14px 1fr auto;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  border: 1px solid rgba(159, 217, 234, 0.16);
+  background: rgba(255, 255, 255, 0.035);
+  color: #ffffff;
+  border-radius: 12px;
+  padding: 10px 12px;
+  cursor: pointer;
+  text-align: left;
+}
+
+.zone-legend-item span {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.zone-legend-item b {
+  font-size: 0.86rem;
+  font-weight: 600;
+}
+
+.zone-legend-item strong {
+  font-size: 0.82rem;
+  color: #e7d84b;
+  font-weight: 700;
+}
+
+.active-zone-legend {
+  border-color: rgba(33, 255, 138, 0.65);
+  background: rgba(33, 255, 138, 0.08);
+}
+
+.selected-area-box {
+  border: 1px solid rgba(34, 211, 238, 0.2);
+  background: rgba(34, 211, 238, 0.06);
+  border-radius: 14px;
+  padding: 12px 14px;
+  margin: 14px 0;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.selected-area-box span {
+  color: #9fd9ea;
+  font-size: 0.82rem;
+}
+
+.selected-area-box strong {
+  color: #ffffff;
+  font-size: 0.92rem;
+}
+
+.category-bar-list {
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+  margin-top: 12px;
+}
+
+.category-bar-item {
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid rgba(159, 217, 234, 0.12);
+  border-radius: 14px;
+  padding: 10px 12px;
+}
+
+.category-bar-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  color: #ffffff;
+  font-size: 0.86rem;
+  margin-bottom: 7px;
+}
+
+.category-bar-header span {
+  font-weight: 600;
+}
+
+.category-bar-header strong {
+  color: #21ff8a;
+}
+
+.category-bar-track {
+  height: 9px;
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.category-bar-fill {
+  height: 100%;
+  border-radius: 999px;
+}
+
+.category-kwh-value {
+  margin-top: 6px;
+  color: #9fd9ea;
+  font-size: 0.78rem;
+  text-align: right;
+}
+
+@media (max-width: 1100px) {
+  .updated-zone-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .equal-zone-card {
+    min-height: auto;
+  }
+
+  .zone-card-top {
+    flex-direction: column;
+  }
+
+  .zone-dropdown {
+    width: 100%;
+  }
+}

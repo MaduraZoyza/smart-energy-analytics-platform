@@ -19,6 +19,12 @@ import Sidebar from "../components/Sidebar";
 import SummaryCard from "../components/SummaryCard";
 import InsightBox from "../components/InsightBox";
 
+// Temporary static fallback data.
+// Currently not used because hourly, daily, and weekly data are fetched from backend.
+// Monthly Jan–May values are still handled separately as sample values, while June is fetched from backend.
+// Keep this commented in case fallback demo data is needed later.
+
+/*
 const chartData = {
   hourly: [
     { time: "00:00", usage: 42 },
@@ -54,6 +60,7 @@ const chartData = {
     { time: "Jun", usage: 29900 },
   ],
 };
+*/
 
 const liveFluctuationData = [
   { time: "1", load: 42 },
@@ -74,6 +81,8 @@ function Dashboard() {
 
   const [summaryData, setSummaryData] = useState(null);
   const [zoneApiData, setZoneApiData] = useState([]);
+  const [zoneByViewData, setZoneByViewData] = useState([]);
+
   const [dailyApiData, setDailyApiData] = useState([]);
   const [hourlyApiData, setHourlyApiData] = useState([]);
   const [weeklyApiData, setWeeklyApiData] = useState([]);
@@ -114,11 +123,11 @@ function Dashboard() {
         const monthly = await monthlyResponse.json();
 
         setSummaryData(summary);
-        setZoneApiData(zones);
-        setDailyApiData(daily);
-        setHourlyApiData(hourly);
-        setWeeklyApiData(weekly);
-        setMonthlyApiData(monthly);
+        setZoneApiData(Array.isArray(zones) ? zones : []);
+        setDailyApiData(Array.isArray(daily) ? daily : []);
+        setHourlyApiData(Array.isArray(hourly) ? hourly : []);
+        setWeeklyApiData(Array.isArray(weekly) ? weekly : []);
+        setMonthlyApiData(Array.isArray(monthly) ? monthly : []);
       } catch (error) {
         console.error("Error fetching dashboard data:", error);
       }
@@ -126,6 +135,24 @@ function Dashboard() {
 
     fetchDashboardData();
   }, []);
+
+  useEffect(() => {
+    const fetchZoneByViewData = async () => {
+      try {
+        const response = await fetch(
+          `http://127.0.0.1:8000/energy/zones/by-view/${selectedView}`
+        );
+
+        const data = await response.json();
+        setZoneByViewData(Array.isArray(data) ? data : []);
+      } catch (error) {
+        console.error("Error fetching zone by view data:", error);
+        setZoneByViewData([]);
+      }
+    };
+
+    fetchZoneByViewData();
+  }, [selectedView]);
 
   const floorColors = {
     "Floor 1": "#22d3ee",
@@ -151,7 +178,7 @@ function Dashboard() {
     "ELV / Network System": "#c084fc",
   };
 
-  const buildZoneSummary = () => {
+  const buildZoneSummary = (dataSource) => {
     const floorOrder = [
       "Floor 1",
       "Floor 2",
@@ -162,13 +189,15 @@ function Dashboard() {
 
     const floorTotals = {};
 
-    zoneApiData.forEach((item) => {
-      floorTotals[item.floor_area] =
-        (floorTotals[item.floor_area] || 0) + Number(item.total_kwh);
+    dataSource.forEach((item) => {
+      const floor = item.floor_area;
+      const value = Number(item.total_kwh) || 0;
+
+      floorTotals[floor] = (floorTotals[floor] || 0) + value;
     });
 
     return floorOrder
-      .filter((floor) => floorTotals[floor])
+      .filter((floor) => floorTotals[floor] !== undefined)
       .map((floor) => ({
         name: floor,
         usage: Number(floorTotals[floor].toFixed(2)),
@@ -176,11 +205,11 @@ function Dashboard() {
       }));
   };
 
-  const buildCategoryBreakdown = (floor) => {
-    const categories = zoneApiData.filter((item) => item.floor_area === floor);
+  const buildCategoryBreakdown = (floor, dataSource) => {
+    const categories = dataSource.filter((item) => item.floor_area === floor);
 
     const total = categories.reduce(
-      (sum, item) => sum + Number(item.total_kwh),
+      (sum, item) => sum + (Number(item.total_kwh) || 0),
       0
     );
 
@@ -188,12 +217,16 @@ function Dashboard() {
       return [];
     }
 
-    return categories.map((item) => ({
-      name: item.category,
-      value: Number(((Number(item.total_kwh) / total) * 100).toFixed(1)),
-      kwh: Number(Number(item.total_kwh).toFixed(2)),
-      fill: categoryColors[item.category] || "#22d3ee",
-    }));
+    return categories.map((item) => {
+      const kwh = Number(item.total_kwh) || 0;
+
+      return {
+        name: item.category,
+        value: Number(((kwh / total) * 100).toFixed(1)),
+        kwh: Number(kwh.toFixed(2)),
+        fill: categoryColors[item.category] || "#22d3ee",
+      };
+    });
   };
 
   const backendHourlyChartData = Array.isArray(hourlyApiData)
@@ -243,20 +276,26 @@ function Dashboard() {
   ];
 
   const activeTrendData =
-    selectedView === "hourly" && backendHourlyChartData.length > 0
+    selectedView === "hourly"
       ? backendHourlyChartData
-      : selectedView === "daily" && backendDailyChartData.length > 0
+      : selectedView === "daily"
       ? backendDailyChartData
-      : selectedView === "weekly" && backendWeeklyChartData.length > 0
+      : selectedView === "weekly"
       ? backendWeeklyChartData
       : selectedView === "monthly"
       ? backendMonthlyChartData
-      : chartData[selectedView] || [];
+      : [];
 
-  const currentZoneSummary = zoneApiData.length > 0 ? buildZoneSummary() : [];
+  const activeZoneData =
+    zoneByViewData.length > 0 ? zoneByViewData : zoneApiData;
+
+  const currentZoneSummary =
+    activeZoneData.length > 0 ? buildZoneSummary(activeZoneData) : [];
 
   const currentZoneBreakdown =
-    zoneApiData.length > 0 ? buildCategoryBreakdown(selectedZone) : [];
+    activeZoneData.length > 0
+      ? buildCategoryBreakdown(selectedZone, activeZoneData)
+      : [];
 
   const selectedZoneTotal =
     currentZoneSummary.find((item) => item.name === selectedZone)?.usage || 0;
@@ -514,7 +553,11 @@ function Dashboard() {
               <div>
                 <h2>Hierarchical Zone Comparison</h2>
                 <span>
-                  June 2026 total electricity usage by floor and category (kWh)
+                  {selectedView === "monthly"
+                    ? "Total electricity usage by floor and category for June 2026 (kWh)"
+                    : `Average ${
+                        selectedView.charAt(0).toUpperCase() + selectedView.slice(1)
+                      } electricity usage by floor and category (kWh)`}
                 </span>
               </div>
             </div>

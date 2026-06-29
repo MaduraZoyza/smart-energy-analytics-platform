@@ -1,28 +1,41 @@
-#step 1 create 1st database table.............................................
+# STEP 1 - Create the database
 
-#create the database
-#@shane  add here
-#create database smart_energy;
+CREATE DATABASE smart_energy;
 
 
+# STEP 2 - Create the table
+
+\c smart_energy
+
+CREATE TABLE energy_readings (
+    id SERIAL PRIMARY KEY,
+    timestamp TIMESTAMP NOT NULL,
+    floor_area VARCHAR(100) NOT NULL,
+    category VARCHAR(100) NOT NULL,
+    energy_kwh DECIMAL(10, 4) NOT NULL,
+    time_period VARCHAR(50),
+    is_weekend BOOLEAN,
+    working_hours BOOLEAN,
+    zone_name VARCHAR(100)
+);
 
 
-#STEP 2 create the table........................................................
+# STEP 3 - Import CSV data into the table
 
-#@shane  add here
+# The CSV file is located at: backend/data/final_june_2026_energy_data.csv
+# Run this command in your terminal (NOT inside psql):
 
+psql -U postgres -d smart_energy -c "\copy energy_readings(timestamp, floor_area, category, energy_kwh, time_period, is_weekend, working_hours, zone_name) FROM '/full/path/to/backend/data/final_june_2026_energy_data.csv' CSV HEADER;"
 
+# Replace /full/path/to/ with your actual project path, for example:
+# psql -U postgres -d smart_energy -c "\copy energy_readings(timestamp, floor_area, category, energy_kwh, time_period, is_weekend, working_hours, zone_name) FROM '/Users/yourname/Documents/smart-energy-analytics-platform/backend/data/final_june_2026_energy_data.csv' CSV HEADER;"
 
+# After running, verify with:
+psql -U postgres -d smart_energy -c "SELECT COUNT(*) FROM energy_readings;"
+# Should return 18000 rows
 
-#STEP 3 add CSV data from the CSV file in Data folder in to the table......................
-
-#@shane  add here
-
-
-
-
-
-
+psql -U postgres -d smart_energy -c "SELECT ROUND(SUM(energy_kwh)::numeric, 2) FROM energy_readings;"
+# Should return 147498.52
 
 #..........AI DATABASE TABLES setup..........................................
 

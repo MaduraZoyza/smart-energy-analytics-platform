@@ -18,6 +18,9 @@ import {
 import Sidebar from "../components/Sidebar";
 import SummaryCard from "../components/SummaryCard";
 import InsightBox from "../components/InsightBox";
+import LiveAlerts from "../components/LiveAlerts";
+import SmartRecommendations from "../components/SmartRecommendations";
+
 
 // Temporary static fallback data.
 // Currently not used because hourly, daily, and weekly data are fetched from backend.
@@ -512,38 +515,12 @@ function Dashboard() {
             </div>
 
             <div className="bottom-insights-grid">
-              <InsightBox title="AI Insights">
-                <ul>
-                  <li>
-                    Floor 4 shows continuous energy usage because the server
-                    room and IT infrastructure operate throughout the day.
-                  </li>
-                  <li>
-                    HVAC and work area lighting loads increase mainly during
-                    working hours.
-                  </li>
-                  <li>
-                    Common building services show continuous baseline energy
-                    usage for safety, ELV, elevator, and outdoor lighting systems.
-                  </li>
-                </ul>
+              <InsightBox>
+                <SmartRecommendations />
               </InsightBox>
 
               <InsightBox title="Live Alerts">
-                <ul>
-                  <li className="warning-text">
-                    High energy consumption detected in Floor 4 server and IT
-                    infrastructure area.
-                  </li>
-                  <li>
-                    Work area lighting and plug loads are expected to reduce
-                    after normal working hours.
-                  </li>
-                  <li>
-                    Fire and safety systems are operating as continuous essential
-                    building loads.
-                  </li>
-                </ul>
+                <LiveAlerts />
               </InsightBox>
             </div>
           </div>

@@ -8,8 +8,7 @@ function Sidebar() {
     { label: "Dashboard", path: "/" },
     { label: "Energy Usage", path: "/" },
     { label: "Zone Analytics", path: "/" },
-    { label: "AI Insights", path: "/" },
-    { label: "Alerts", path: "/" },
+    { label: "AI Insights", path: "/ai-insights" },
     { label: "Reports", path: "/reports" },
     { label: "Settings", path: "/" },
   ];

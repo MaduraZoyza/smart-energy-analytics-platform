@@ -1,12 +1,17 @@
+import { useNavigate, useLocation } from "react-router-dom";
+
 function Sidebar() {
+  const navigate = useNavigate();
+  const location = useLocation();
+
   const menuItems = [
-    "Dashboard",
-    "Energy Usage",
-    "Zone Analytics",
-    "AI Insights",
-    "Alerts",
-    "Reports",
-    "Settings",
+    { label: "Dashboard", path: "/" },
+    { label: "Energy Usage", path: "/" },
+    { label: "Zone Analytics", path: "/" },
+    { label: "AI Insights", path: "/" },
+    { label: "Alerts", path: "/" },
+    { label: "Reports", path: "/reports" },
+    { label: "Settings", path: "/" },
   ];
 
   return (
@@ -18,14 +23,20 @@ function Sidebar() {
           <p>Smart Building</p>
         </div>
       </div>
-
       <nav>
         {menuItems.map((item, index) => (
           <div
             key={index}
-            className={index === 0 ? "sidebar-item active" : "sidebar-item"}
+            className={
+              location.pathname === item.path && item.path !== "/" 
+                ? "sidebar-item active"
+                : location.pathname === "/" && item.label === "Dashboard"
+                ? "sidebar-item active"
+                : "sidebar-item"
+            }
+            onClick={() => navigate(item.path)}
           >
-            {item}
+            {item.label}
           </div>
         ))}
       </nav>

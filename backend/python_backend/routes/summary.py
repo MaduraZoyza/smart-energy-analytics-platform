@@ -37,3 +37,21 @@ def get_time_periods():
     rows = cur.fetchall()
     conn.close()
     return list(rows)
+
+
+@router.get("/energy/highest-daily-area")
+def get_highest_daily_area():
+    conn = get_db()
+    cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+    cur.execute("""
+        SELECT floor_area,
+               DATE(timestamp) as date,
+               ROUND(SUM(energy_kwh)::numeric, 2) as total_kwh
+        FROM energy_readings
+        GROUP BY floor_area, DATE(timestamp)
+        ORDER BY total_kwh DESC
+        LIMIT 1
+    """)
+    row = cur.fetchone()
+    conn.close()
+    return dict(row)

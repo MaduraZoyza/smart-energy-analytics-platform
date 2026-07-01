@@ -5,39 +5,35 @@ function Sidebar() {
   const location = useLocation();
 
   const menuItems = [
-    { label: "Dashboard", path: "/" },
-    { label: "Energy Usage", path: "/" },
-    { label: "Zone Analytics", path: "/" },
-    { label: "AI Insights", path: "/" },
-    //{ label: "Alerts", path: "/" }, "remove the alerts tab for now"
-    { label: "Reports", path: "/reports" },
-    { label: "Settings", path: "/" },
+    { name: "Dashboard", path: "/" },
+    { name: "Energy Usage", path: "/" },
+    { name: "Zone Analytics", path: "/" },
+    { name: "AI Insights", path: "/" },
+    { name: "Reports", path: "/reports" },
+    { name: "Settings", path: "/" },
   ];
 
   return (
     <aside className="sidebar">
-      <div className="brand-box">
+      <div className="brand">
         <div className="brand-icon">⚡</div>
         <div>
-          <h2 className="sidebar-title">Energy AI</h2>
-          <p>Smart Building</p>
+          <h2>Smart Energy</h2>
+          <p>Analytics Platform</p>
         </div>
       </div>
-      <nav>
-        {menuItems.map((item, index) => (
-          <div
-            key={index}
-            className={
-              location.pathname === item.path && item.path !== "/" 
-                ? "sidebar-item active"
-                : location.pathname === "/" && item.label === "Dashboard"
-                ? "sidebar-item active"
-                : "sidebar-item"
-            }
+
+      <nav className="sidebar-nav">
+        {menuItems.map((item) => (
+          <button
+            key={item.name}
+            className={`nav-item ${
+              location.pathname === item.path ? "active" : ""
+            }`}
             onClick={() => navigate(item.path)}
           >
-            {item.label}
-          </div>
+            {item.name}
+          </button>
         ))}
       </nav>
     </aside>

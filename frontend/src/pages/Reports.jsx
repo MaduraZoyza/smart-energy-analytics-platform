@@ -106,24 +106,73 @@ function Reports() {
             {/* Section 1 — Summary Cards */}
             <section className="summary-grid" style={{ marginBottom: 26 }}>
               <div className="summary-card">
-                <p className="card-title">Total Energy Usage</p>
-                <h3>{Number(reportData.summary.total_kwh).toLocaleString()} kWh</h3>
-                <p className="card-note">Total building consumption for June</p>
+                <p className="card-title">Monthly Total Energy Usage</p>
+                <h3>
+                  {Number(reportData.summary.total_kwh).toLocaleString(undefined, {
+                    maximumFractionDigits: 2,
+                  })}{" "}
+                  kWh
+                </h3>
+                <p className="card-note">Total building consumption</p>
               </div>
+
               <div className="summary-card">
-                <p className="card-title">Total Records</p>
-                <h3>{Number(reportData.summary.total_records).toLocaleString()}</h3>
-                <p className="card-note">Energy data readings</p>
+                <p className="card-title">Monthly Peak Usage Category</p>
+                <h3>
+                  {(() => {
+                    const categoryTotals = {};
+
+                    reportData.zone_breakdown.forEach((item) => {
+                      const category = item.category || "Unknown";
+                      const value = Number(item.total_kwh) || 0;
+                      categoryTotals[category] = (categoryTotals[category] || 0) + value;
+                    });
+
+                    const peakCategory = Object.entries(categoryTotals)
+                      .map(([category, total]) => ({ category, total }))
+                      .sort((a, b) => b.total - a.total)[0];
+
+                    return peakCategory?.category || "N/A";
+                  })()}
+                </h3>
+                <p className="card-note">
+                  {(() => {
+                    const categoryTotals = {};
+
+                    reportData.zone_breakdown.forEach((item) => {
+                      const category = item.category || "Unknown";
+                      const value = Number(item.total_kwh) || 0;
+                      categoryTotals[category] = (categoryTotals[category] || 0) + value;
+                    });
+
+                    const peakCategory = Object.entries(categoryTotals)
+                      .map(([category, total]) => ({ category, total }))
+                      .sort((a, b) => b.total - a.total)[0];
+
+                    return peakCategory
+                      ? `${peakCategory.total.toLocaleString(undefined, {
+                          maximumFractionDigits: 2,
+                        })} kWh in current month`
+                      : "Highest category in current month";
+                  })()}
+                </p>
               </div>
+
               <div className="summary-card">
-                <p className="card-title">Average Usage</p>
-                <h3>{Number(reportData.summary.avg_kwh).toFixed(2)} kWh</h3>
-                <p className="card-note">Average per reading</p>
+                <p className="card-title">Daily Average Energy Usage</p>
+                <h3>
+                  {(Number(reportData.summary.total_kwh) / 30).toLocaleString(undefined, {
+                    maximumFractionDigits: 2,
+                  })}{" "}
+                  kWh
+                </h3>
+                <p className="card-note">Average daily usage in current month</p>
               </div>
+
               <div className="summary-card">
                 <p className="card-title">Peak Usage</p>
                 <h3>{Number(reportData.summary.peak_kwh).toFixed(2)} kWh</h3>
-                <p className="card-note">Highest recorded value</p>
+                <p className="card-note">Highest record value</p>
               </div>
             </section>
 

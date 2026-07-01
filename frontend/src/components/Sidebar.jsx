@@ -9,7 +9,7 @@ function Sidebar() {
     { label: "Energy Usage", path: "/" },
     { label: "Zone Analytics", path: "/" },
     { label: "AI Insights", path: "/" },
-    { label: "Alerts", path: "/" },
+    //{ label: "Alerts", path: "/" }, "remove the alerts tab for now"
     { label: "Reports", path: "/reports" },
     { label: "Settings", path: "/" },
   ];

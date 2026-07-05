@@ -66,16 +66,18 @@ const chartData = {
 */
 
 const liveFluctuationData = [
-  { time: "1", load: 42 },
-  { time: "2", load: 55 },
-  { time: "3", load: 48 },
-  { time: "4", load: 70 },
-  { time: "5", load: 62 },
-  { time: "6", load: 88 },
-  { time: "7", load: 76 },
-  { time: "8", load: 95 },
-  { time: "9", load: 72 },
-  { time: "10", load: 84 },
+  { time: "1", load: 188 },
+  { time: "2", load: 196 },
+  { time: "3", load: 207 },
+  { time: "4", load: 218 },
+  { time: "5", load: 229 },
+  { time: "6", load: 241 },
+  { time: "7", load: 233 },
+  { time: "8", load: 224 },
+  { time: "9", load: 238 },
+  { time: "10", load: 252 },
+  { time: "11", load: 244 },
+  { time: "12", load: 231 },
 ];
 
 function Dashboard() {
@@ -90,6 +92,8 @@ function Dashboard() {
   const [hourlyApiData, setHourlyApiData] = useState([]);
   const [weeklyApiData, setWeeklyApiData] = useState([]);
   const [monthlyApiData, setMonthlyApiData] = useState([]);
+
+  const [monthlyPeakCategory, setMonthlyPeakCategory] = useState(null);
 
   useEffect(() => {
     const fetchDashboardData = async () => {
@@ -117,6 +121,10 @@ function Dashboard() {
         const monthlyResponse = await fetch(
           "http://127.0.0.1:8000/energy/monthly"
         );
+        
+        const monthlyZoneResponse = await fetch(
+          "http://127.0.0.1:8000/energy/zones/by-view/monthly"
+        );
 
         const summary = await summaryResponse.json();
         const zones = await zonesResponse.json();
@@ -124,6 +132,7 @@ function Dashboard() {
         const hourly = await hourlyResponse.json();
         const weekly = await weeklyResponse.json();
         const monthly = await monthlyResponse.json();
+        const monthlyZoneData = await monthlyZoneResponse.json();
 
         setSummaryData(summary);
         setZoneApiData(Array.isArray(zones) ? zones : []);
@@ -131,6 +140,30 @@ function Dashboard() {
         setHourlyApiData(Array.isArray(hourly) ? hourly : []);
         setWeeklyApiData(Array.isArray(weekly) ? weekly : []);
         setMonthlyApiData(Array.isArray(monthly) ? monthly : []);
+
+        if (Array.isArray(monthlyZoneData)) {
+          const categoryTotals = {};
+
+          monthlyZoneData.forEach((item) => {
+            const category = item.category || item.category_name || "Unknown";
+
+            const value =
+              Number(item.total_kwh) ||
+              Number(item.energy_kwh) ||
+              Number(item.usage) ||
+              0;
+
+            categoryTotals[category] =
+              (categoryTotals[category] || 0) + value;
+          });
+
+          const peakCategory = Object.entries(categoryTotals)
+            .map(([category, total]) => ({ category, total }))
+            .sort((a, b) => b.total - a.total)[0];
+
+          setMonthlyPeakCategory(peakCategory || null);
+        }
+
       } catch (error) {
         console.error("Error fetching dashboard data:", error);
       }
@@ -267,11 +300,11 @@ function Dashboard() {
       : 0;
 
   const backendMonthlyChartData = [
-    { time: "Jan", usage: 28800 },
-    { time: "Feb", usage: 27100 },
-    { time: "Mar", usage: 29500 },
-    { time: "Apr", usage: 30600 },
-    { time: "May", usage: 31800 },
+    { time: "Jan", usage: 162500 },
+    { time: "Feb", usage: 158200 },
+    { time: "Mar", usage: 154600 },
+    { time: "Apr", usage: 149800 },
+    { time: "May", usage: 145300 },
     {
       time: "Jun",
       usage: juneRealTotal > 0 ? juneRealTotal : 0,
@@ -323,29 +356,39 @@ function Dashboard() {
 
         <section className="summary-grid">
           <SummaryCard
-            title="Total Energy Usage"
-            value={
-              summaryData
-                ? `${Number(summaryData.total_kwh).toFixed(2)} kWh`
-                : "Loading..."
-            }
+            title="Monthly Total Energy Usage"
+            value={`${
+              summaryData?.total_kwh
+                ? Number(summaryData.total_kwh).toLocaleString(undefined, {
+                    maximumFractionDigits: 2,
+                  })
+                : 0
+            } kWh`}
             note="Total building consumption"
           />
 
           <SummaryCard
-            title="Total Records"
-            value={summaryData ? summaryData.total_records : "Loading..."}
-            note="Energy data readings"
+            title="Monthly Peak Usage Category"
+            value={monthlyPeakCategory?.category || "Loading..."}
+            note={
+              monthlyPeakCategory
+                ? `${monthlyPeakCategory.total.toLocaleString(undefined, {
+                    maximumFractionDigits: 2,
+                  })} kWh in current month`
+                : "Calculating highest category"
+            }
           />
 
           <SummaryCard
-            title="Average Usage"
-            value={
-              summaryData
-                ? `${Number(summaryData.avg_kwh).toFixed(2)} kWh`
-                : "Loading..."
-            }
-            note="Average reading value"
+            title="Daily Average Energy Usage"
+            value={`${
+              summaryData?.total_kwh
+                ? (Number(summaryData.total_kwh) / 30).toLocaleString(undefined, {
+                    maximumFractionDigits: 2,
+                  })
+                : 0
+            } kWh`}
+            note="Average daily usage in current month"
           />
 
           <SummaryCard
@@ -449,7 +492,7 @@ function Dashboard() {
                 </div>
 
                 <div className="load-value">
-                  <h3>84 kW</h3>
+                  <h3>{liveFluctuationData[liveFluctuationData.length - 1]?.load || 0} kW</h3>
                   <p>Current Building Load</p>
                 </div>
 

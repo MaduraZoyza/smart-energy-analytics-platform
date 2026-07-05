@@ -57,6 +57,13 @@ body {
 }
 
 .sidebar-item {
+  width: 100%;
+  display: block;
+  text-align: left;
+  background: transparent;
+  font-family: inherit;
+  font-size: 15px;
+
   padding: 14px 15px;
   margin-bottom: 10px;
   border-radius: 8px;

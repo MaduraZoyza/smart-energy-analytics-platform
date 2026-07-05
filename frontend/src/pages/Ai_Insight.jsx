@@ -1,79 +1,66 @@
-import { useState, useEffect } from "react"
+import { useState } from "react";
 import Sidebar from "../components/Sidebar";
 import LiveAlerts from "../components/LiveAlerts";
 import SmartRecommendations from "../components/SmartRecommendations";
-
-
 
 // ============================================================
 // MAIN APP COMPONENT
 // ============================================================
 export default function AiInsight() {
-
   // -------------------------
   // STATE
   // -------------------------
-  const [question, setQuestion] = useState("")
-  const [answer, setAnswer] = useState(null)
-  const [loading, setLoading] = useState(false)
-  const [alerts, setAlerts] = useState([])
-  const [recommendations, setRecommendations] = useState([])  // NEW
-
+  const [question, setQuestion] = useState("");
+  const [answer, setAnswer] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   // -------------------------
   // ASK AI (POST /chat)
   // -------------------------
   async function ask() {
+    if (!question.trim()) return;
 
-    if (!question.trim()) return
-
-    setLoading(true)
-    setAnswer("")
+    setLoading(true);
+    setAnswer("");
 
     try {
-
       const res = await fetch("http://localhost:8000/chat", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          message: question
-        })
-      })
+          question: question,
+        }),
+      });
 
-      const data = await res.json()
-      setAnswer(data)
-
+      const data = await res.json();
+      setAnswer(data);
     } catch {
-
       setAnswer({
-        response: "Something went wrong. Try again."
-      })
-
+        response: "Something went wrong. Try again.",
+        sql: "",
+      });
     }
 
-    setLoading(false)
-
+    setLoading(false);
   }
 
-
-
   // -------------------------
-  // CATEGORY COLOR HELPER  NEW
+  // CATEGORY COLOR HELPER
   // -------------------------
   function getCategoryColor(category) {
     const colors = {
-      "HVAC":        "#38bdf8",
-      "Lighting":    "#facc15",
-      "Plug Loads":  "#fb923c",
+      HVAC: "#38bdf8",
+      Lighting: "#facc15",
+      "Plug Loads": "#fb923c",
       "Server Room": "#a78bfa",
-      "Elevators":   "#34d399",
-      "General":     "#94a3b8"
-    }
-    return colors[category] || "#94a3b8"
-  }
+      Elevators: "#34d399",
+      General: "#94a3b8",
+    };
 
+    return colors[category] || "#94a3b8";
+  }
 
   // ============================================================
   // RENDER
@@ -81,8 +68,16 @@ export default function AiInsight() {
   return (
     <div className="app-layout">
       <Sidebar />
-      <main className="main-content" style={{ display: "flex", flexDirection: "column", height: "100vh" }}>
-        {/* ---- CONTENT WRAPPER (90%) ---- */}
+
+      <main
+        className="main-content"
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          height: "100vh",
+        }}
+      >
+        {/* ---- CONTENT WRAPPER ---- */}
         <div style={{ flex: 1, overflowY: "auto", paddingBottom: "20px" }}>
           {/* ---- HEADER ---- */}
           <div className="page-header">
@@ -95,9 +90,15 @@ export default function AiInsight() {
             </div>
           </div>
 
-          {/* ---- MAIN CONTENT LAYOUT: 60% Left / 40% Right ---- */}
-          <div style={{ display: "grid", gridTemplateColumns: "1.5fr 1fr", gap: "22px" }}>
-            {/* ---- LEFT COLUMN (60%): Chat and Alerts ---- */}
+          {/* ---- MAIN CONTENT LAYOUT ---- */}
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "1.5fr 1fr",
+              gap: "22px",
+            }}
+          >
+            {/* ---- LEFT COLUMN: Chat and Alerts ---- */}
             <div style={{ display: "flex", flexDirection: "column", gap: "22px" }}>
               {/* ---- CHAT SECTION ---- */}
               <div className="chart-panel">
@@ -106,7 +107,13 @@ export default function AiInsight() {
                 </div>
 
                 {/* ---- INPUT ROW ---- */}
-                <div style={{ display: "flex", gap: "10px", marginBottom: "20px" }}>
+                <div
+                  style={{
+                    display: "flex",
+                    gap: "10px",
+                    marginBottom: "20px",
+                  }}
+                >
                   <input
                     value={question}
                     onChange={(e) => setQuestion(e.target.value)}
@@ -122,6 +129,7 @@ export default function AiInsight() {
                       fontFamily: "Segoe UI, Arial, sans-serif",
                     }}
                   />
+
                   <button
                     onClick={ask}
                     style={{
@@ -134,44 +142,72 @@ export default function AiInsight() {
                       fontWeight: "600",
                       transition: "background 0.2s ease",
                     }}
-                    onMouseEnter={(e) => e.target.style.background = "#0e8fb0"}
-                    onMouseLeave={(e) => e.target.style.background = "#0a7896"}
+                    onMouseEnter={(e) => {
+                      e.target.style.background = "#0e8fb0";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.target.style.background = "#0a7896";
+                    }}
                   >
                     {loading ? "Thinking..." : "Ask"}
                   </button>
                 </div>
 
                 {/* ---- ANSWER BOX ---- */}
-                <div style={{
-                  padding: "15px",
-                  borderRadius: "8px",
-                  background: "#07152e",
-                  border: "1px solid #176c8d",
-                  minHeight: "100px",
-                }}>
-                  <h3 style={{ margin: "0 0 8px", color: "#22d3ee" }}>Answer</h3>
+                <div
+                  style={{
+                    padding: "15px",
+                    borderRadius: "8px",
+                    background: "#07152e",
+                    border: "1px solid #176c8d",
+                    minHeight: "100px",
+                  }}
+                >
+                  <h3 style={{ margin: "0 0 8px", color: "#22d3ee" }}>
+                    Answer
+                  </h3>
 
                   {answer ? (
                     <>
-                      <p style={{ color: "#cbd5e1", lineHeight: "1.5", margin: "0 0 12px" }}>
+                      <p
+                        style={{
+                          color: "#cbd5e1",
+                          lineHeight: "1.5",
+                          margin: "0 0 12px",
+                        }}
+                      >
                         {answer.response}
                       </p>
 
-                      <hr style={{ borderColor: "#176c8d", margin: "12px 0" }} />
+                      <hr
+                        style={{
+                          borderColor: "#176c8d",
+                          margin: "12px 0",
+                        }}
+                      />
 
-                      <h4 style={{ color: "#e7d84b", fontSize: "14px", margin: "12px 0 8px" }}>
+                      <h4
+                        style={{
+                          color: "#e7d84b",
+                          fontSize: "14px",
+                          margin: "12px 0 8px",
+                        }}
+                      >
                         Generated SQL
                       </h4>
-                      <pre style={{
-                        whiteSpace: "pre-wrap",
-                        color: "#21ff8a",
-                        fontSize: "12px",
-                        background: "#051118",
-                        padding: "10px",
-                        borderRadius: "6px",
-                        border: "1px solid #145c7a",
-                        overflow: "auto",
-                      }}>
+
+                      <pre
+                        style={{
+                          whiteSpace: "pre-wrap",
+                          color: "#21ff8a",
+                          fontSize: "12px",
+                          background: "#051118",
+                          padding: "10px",
+                          borderRadius: "6px",
+                          border: "1px solid #145c7a",
+                          overflow: "auto",
+                        }}
+                      >
                         {answer.sql}
                       </pre>
                     </>
@@ -185,23 +221,18 @@ export default function AiInsight() {
 
               {/* ---- LIVE ALERTS WIDGET ---- */}
               <div className="chart-panel">
-                
-
                 <LiveAlerts />
-
               </div>
             </div>
 
-            {/* ---- RIGHT COLUMN  Smart Recommendations ---- */}
+            {/* ---- RIGHT COLUMN: SMART RECOMMENDATIONS ---- */}
             <div className="chart-panel">
-              
               <SmartRecommendations />
-       
             </div>
           </div>
         </div>
 
-        {/* ---- FOOTER  ---- */}
+        {/* ---- FOOTER ---- */}
         <div
           style={{
             textAlign: "center",
@@ -215,12 +246,14 @@ export default function AiInsight() {
             justifyContent: "center",
           }}
         >
-          Smart Energy Analytics Platform — Generated {new Date().toLocaleDateString("en-GB", {
-             month: "long", year: "numeric"
-          })} · Data source: PostgreSQL energy_readings (18,000 records)
+          Smart Energy Analytics Platform — Generated{" "}
+          {new Date().toLocaleDateString("en-GB", {
+            month: "long",
+            year: "numeric",
+          })}{" "}
+          · Data source: PostgreSQL energy_readings (18,000 records)
         </div>
       </main>
     </div>
-  )
-
+  );
 }

@@ -17,13 +17,17 @@ import Sidebar from "../components/Sidebar";
 function Reports() {
   const [reportData, setReportData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [highestDailyArea, setHighestDailyArea] = useState(null);
 
   useEffect(() => {
     const fetchReport = async () => {
       try {
         const res = await fetch("http://127.0.0.1:8000/energy/report");
+        const highestDailyAreaResponse = await fetch("http://127.0.0.1:8000/energy/highest-daily-area");
         const data = await res.json();
+        const highestDailyAreaData = await highestDailyAreaResponse.json();
         setReportData(data);
+        setHighestDailyArea(highestDailyAreaData);
       } catch (error) {
         console.error("Error fetching report data:", error);
       } finally {
@@ -170,9 +174,24 @@ function Reports() {
               </div>
 
               <div className="summary-card">
-                <p className="card-title">Peak Usage</p>
-                <h3>{Number(reportData.summary.peak_kwh).toFixed(2)} kWh</h3>
-                <p className="card-note">Highest record value</p>
+                <p className="card-title">Highest Daily Consumption Area</p>
+                <h3>
+                  {highestDailyArea ? highestDailyArea.floor_area : "Loading..."}
+                </h3>
+                <p className="card-note">
+                  {highestDailyArea
+                    ? `${Number(highestDailyArea.total_kwh).toLocaleString(undefined, {
+                        maximumFractionDigits: 2,
+                      })} kWh on ${new Date(highestDailyArea.date).toLocaleDateString(
+                        "en-GB",
+                        {
+                          day: "2-digit",
+                          month: "long",
+                          year: "numeric",
+                        }
+                      )}`
+                    : "Highest single-day area usage"}
+                </p>
               </div>
             </section>
 

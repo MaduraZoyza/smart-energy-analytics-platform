@@ -94,6 +94,7 @@ function Dashboard() {
   const [monthlyApiData, setMonthlyApiData] = useState([]);
 
   const [monthlyPeakCategory, setMonthlyPeakCategory] = useState(null);
+  const [highestDailyArea, setHighestDailyArea] = useState(null);
 
   useEffect(() => {
     const fetchDashboardData = async () => {
@@ -126,6 +127,10 @@ function Dashboard() {
           "http://127.0.0.1:8000/energy/zones/by-view/monthly"
         );
 
+        const highestDailyAreaResponse = await fetch(
+          "http://127.0.0.1:8000/energy/highest-daily-area"
+        );
+
         const summary = await summaryResponse.json();
         const zones = await zonesResponse.json();
         const daily = await dailyResponse.json();
@@ -133,6 +138,8 @@ function Dashboard() {
         const weekly = await weeklyResponse.json();
         const monthly = await monthlyResponse.json();
         const monthlyZoneData = await monthlyZoneResponse.json();
+        const highestDailyAreaData = await highestDailyAreaResponse.json();
+        
 
         setSummaryData(summary);
         setZoneApiData(Array.isArray(zones) ? zones : []);
@@ -140,6 +147,7 @@ function Dashboard() {
         setHourlyApiData(Array.isArray(hourly) ? hourly : []);
         setWeeklyApiData(Array.isArray(weekly) ? weekly : []);
         setMonthlyApiData(Array.isArray(monthly) ? monthly : []);
+        setHighestDailyArea(highestDailyAreaData);
 
         if (Array.isArray(monthlyZoneData)) {
           const categoryTotals = {};
@@ -392,13 +400,26 @@ function Dashboard() {
           />
 
           <SummaryCard
-            title="Peak Usage"
+            title="Highest Daily Consumption Area"
             value={
-              summaryData
-                ? `${Number(summaryData.peak_kwh).toFixed(2)} kWh`
+              highestDailyArea
+                ? highestDailyArea.floor_area
                 : "Loading..."
             }
-            note="Highest recorded value"
+            note={
+              highestDailyArea
+                ? `${Number(highestDailyArea.total_kwh).toLocaleString(undefined, {
+                    maximumFractionDigits: 2,
+                  })} kWh on ${new Date(highestDailyArea.date).toLocaleDateString(
+                    "en-GB",
+                    {
+                      day: "2-digit",
+                      month: "long",
+                      year: "numeric",
+                    }
+                  )}`
+                : "Highest single-day area usage"
+            }
           />
         </section>
 

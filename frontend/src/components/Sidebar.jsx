@@ -9,18 +9,24 @@ function Sidebar() {
 
   const menuItems = [
     { name: "Dashboard", path: "/" },
-    { name: "Energy Usage", path: "/" },
-    { name: "Zone Analytics", path: "/" },
+    { name: "Energy Usage", path: "/energy-usage" },
+    { name: "Zone Analytics", path: "/zone-analytics" },
     { name: "AI Insights", path: "/ai-insights" },
     { name: "Reports", path: "/reports" },
-    { name: "Settings", path: "/" },
+    { name: "Settings", path: "/settings" },
   ];
 
   useEffect(() => {
-    if (location.pathname === "/reports") {
-      setActiveTab("Reports");
+    if (location.pathname === "/energy-usage") {
+      setActiveTab("Energy Usage");
+    } else if (location.pathname === "/zone-analytics") {
+      setActiveTab("Zone Analytics");
     } else if (location.pathname === "/ai-insights") {
       setActiveTab("AI Insights");
+    } else if (location.pathname === "/reports") {
+      setActiveTab("Reports");
+    } else if (location.pathname === "/settings") {
+      setActiveTab("Settings");
     } else if (location.pathname === "/") {
       setActiveTab("Dashboard");
     }

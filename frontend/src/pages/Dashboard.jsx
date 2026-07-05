@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   LineChart,
   Line,
@@ -81,6 +82,8 @@ const liveFluctuationData = [
 ];
 
 function Dashboard() {
+  const navigate = useNavigate();
+
   const [selectedView, setSelectedView] = useState("daily");
   const [selectedZone, setSelectedZone] = useState("Floor 1");
 
@@ -359,7 +362,12 @@ function Dashboard() {
             </p>
           </div>
 
-          <button className="export-button">Export Report</button>
+          <button
+            className="export-button"
+            onClick={() => navigate("/reports")}
+          >
+            Export Report
+          </button>
         </div>
 
         <section className="summary-grid">

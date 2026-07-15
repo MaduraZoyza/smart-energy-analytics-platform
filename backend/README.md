@@ -33,6 +33,47 @@ backend/
 
 
 
+## INITIAL STEP  Configure Gemini API Key
+
+Create file: inside "/python_backend" (use "env.example" format )
+
+```text
+.env
+```
+
+Add:
+
+```env
+GEMINI_API_KEY=YOUR_GEMINI_API_KEY
+```
+
+Get API key from:
+
+https://aistudio.google.com/app/apikey
+
+---
+
+
+
+## PostgreSQL Configuration
+
+Current database:
+
+
+Update credentials in:
+
+```python
+psycopg2.connect(
+    host="localhost",
+    port="5432",
+    database="smart_energy",
+    user="postgres",
+    password="YOUR_PASSWORD"
+)
+```
+
+
+
 
 
 ## Step 1 — Setup Database
@@ -101,44 +142,6 @@ pip install -r requirements.txt
 
 
 
-## Configure Gemini API Key
-
-Create file:
-
-```text
-.env
-```
-
-Add:
-
-```env
-GEMINI_API_KEY=YOUR_GEMINI_API_KEY
-```
-
-Get API key from:
-
-https://aistudio.google.com/app/apikey
-
----
-
-
-
-## PostgreSQL Configuration
-
-Current database:
-
-
-Update credentials in:
-
-```python
-psycopg2.connect(
-    host="localhost",
-    port="5432",
-    database="smart_energy",
-    user="postgres",
-    password="YOUR_PASSWORD"
-)
-```
 
 
 

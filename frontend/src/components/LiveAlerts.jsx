@@ -10,7 +10,7 @@ export default function LiveAlerts() {
 
       try {
 
-        const res = await fetch("http://localhost:8000/alerts");
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/alerts`);
         const data = await res.json();
 
         setAlerts(data);

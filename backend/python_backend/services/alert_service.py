@@ -47,13 +47,14 @@ Data:
 
     try:
         res = client.models.generate_content(
-            model="gemini-2.5-flash",
+            model="gemini-2.5-flash-lite",
             contents=prompt
         )
         clean = res.text.replace("```json", "").replace("```", "").strip()
         ai_alerts = json.loads(clean)
 
-    except:
+    except Exception as e:
+        print(f"[generate_alerts] Gemini call failed: {e}")
         ai_alerts = [
             {"text": "No critical energy anomaly detected.", "color": "#facc15"}
         ]

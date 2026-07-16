@@ -138,13 +138,14 @@ Return this exact format:
     # STEP 8: Call Gemini
     try:
         res = client.models.generate_content(
-            model="gemini-2.5-flash",
+            model="gemini-2.5-flash-lite",
             contents=prompt
         )
         clean = res.text.replace("```json", "").replace("```", "").strip()
         recommendations = json.loads(clean)
 
     except Exception as e:
+        print(f"[get_recommendations] Gemini call failed: {e}")
         recommendations = [
             {
                 "title": "Energy Review Needed",

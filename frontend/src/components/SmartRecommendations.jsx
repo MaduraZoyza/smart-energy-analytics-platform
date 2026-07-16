@@ -13,7 +13,7 @@ export default function SmartRecommendations() {
 
       try {
 
-        const res = await fetch("http://localhost:8000/recommendations");
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/recommendations`);
         const data = await res.json();
 
         setRecommendations(data);

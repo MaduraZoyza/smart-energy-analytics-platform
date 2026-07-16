@@ -6,6 +6,9 @@ load_dotenv()
 
 client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
 
+# Central model name — change once here if Google retires/renames it again
+MODEL_NAME = "gemini-2.5-flash-lite"
+
 
 # -----------------------------------
 # QUESTION CLASSIFIER
@@ -26,7 +29,7 @@ Question:
 """
 
     res = client.models.generate_content(
-        model="gemini-2.5-flash",
+        model=MODEL_NAME,
         contents=prompt
     )
     answer = res.text.strip().upper()
@@ -61,7 +64,7 @@ List rooms or areas if relevant.
 """
 
     res = client.models.generate_content(
-        model="gemini-2.5-flash",
+        model=MODEL_NAME,
         contents=prompt
     )
     return res.text.strip()
@@ -119,7 +122,7 @@ Question:
 """
 
     res = client.models.generate_content(
-        model="gemini-2.5-flash",
+        model=MODEL_NAME,
         contents=prompt
     )
     sql = res.text.replace("```sql", "").replace("```", "").strip()
@@ -152,7 +155,7 @@ Error:
 """
 
     res = client.models.generate_content(
-        model="gemini-2.5-flash",
+        model=MODEL_NAME,
         contents=prompt
     )
     sql = res.text.replace("```sql", "").replace("```", "").strip()
@@ -175,7 +178,7 @@ Give a short human-friendly answer.
 """
 
     res = client.models.generate_content(
-        model="gemini-2.5-flash",
+        model=MODEL_NAME,
         contents=prompt
     )
     return res.text.strip()

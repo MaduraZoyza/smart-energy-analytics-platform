@@ -103,35 +103,35 @@ function Dashboard() {
     const fetchDashboardData = async () => {
       try {
         const summaryResponse = await fetch(
-          "http://127.0.0.1:8000/energy/summary"
+          `${import.meta.env.VITE_API_URL}/energy/summary`
         );
 
         const zonesResponse = await fetch(
-          "http://127.0.0.1:8000/energy/zones"
+          `${import.meta.env.VITE_API_URL}/energy/zones`
         );
 
         const dailyResponse = await fetch(
-          "http://127.0.0.1:8000/energy/daily"
+          `${import.meta.env.VITE_API_URL}/energy/daily`
         );
 
         const hourlyResponse = await fetch(
-          "http://127.0.0.1:8000/energy/hourly"
+          `${import.meta.env.VITE_API_URL}/energy/hourly`
         );
 
         const weeklyResponse = await fetch(
-          "http://127.0.0.1:8000/energy/weekly"
+          `${import.meta.env.VITE_API_URL}/energy/weekly`
         );
 
         const monthlyResponse = await fetch(
-          "http://127.0.0.1:8000/energy/monthly"
+          `${import.meta.env.VITE_API_URL}/energy/monthly`
         );
         
         const monthlyZoneResponse = await fetch(
-          "http://127.0.0.1:8000/energy/zones/by-view/monthly"
+          `${import.meta.env.VITE_API_URL}/energy/zones/by-view/monthly`
         );
 
         const highestDailyAreaResponse = await fetch(
-          "http://127.0.0.1:8000/energy/highest-daily-area"
+          `${import.meta.env.VITE_API_URL}/energy/highest-daily-area`
         );
 
         const summary = await summaryResponse.json();
@@ -187,7 +187,7 @@ function Dashboard() {
     const fetchZoneByViewData = async () => {
       try {
         const response = await fetch(
-          `http://127.0.0.1:8000/energy/zones/by-view/${selectedView}`
+          `${import.meta.env.VITE_API_URL}/energy/zones/by-view/${selectedView}`
         );
 
         const data = await response.json();

@@ -27,7 +27,7 @@ function ZoneAnalytics() {
     const fetchInitialZoneData = async () => {
       try {
         const zonesResponse = await fetch(
-          "http://127.0.0.1:8000/energy/zones"
+          `${import.meta.env.VITE_API_URL}/energy/zones`
         );
 
         const zones = await zonesResponse.json();
@@ -45,7 +45,7 @@ function ZoneAnalytics() {
     const fetchZoneByViewData = async () => {
       try {
         const response = await fetch(
-          `http://127.0.0.1:8000/energy/zones/by-view/${selectedView}`
+          `${import.meta.env.VITE_API_URL}/energy/zones/by-view/${selectedView}`
         );
 
         const data = await response.json();

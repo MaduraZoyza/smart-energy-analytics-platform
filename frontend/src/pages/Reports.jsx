@@ -22,8 +22,8 @@ function Reports() {
   useEffect(() => {
     const fetchReport = async () => {
       try {
-        const res = await fetch("http://127.0.0.1:8000/energy/report");
-        const highestDailyAreaResponse = await fetch("http://127.0.0.1:8000/energy/highest-daily-area");
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/energy/report`);
+        const highestDailyAreaResponse = await fetch(`${import.meta.env.VITE_API_URL}/energy/highest-daily-area`);
         const data = await res.json();
         const highestDailyAreaData = await highestDailyAreaResponse.json();
         setReportData(data);

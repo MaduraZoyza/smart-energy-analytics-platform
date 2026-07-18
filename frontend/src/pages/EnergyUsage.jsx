@@ -28,23 +28,23 @@ function EnergyUsage() {
     const fetchEnergyUsageData = async () => {
       try {
         const summaryResponse = await fetch(
-          "http://127.0.0.1:8000/energy/summary"
+          `${import.meta.env.VITE_API_URL}/energy/summary`
         );
 
         const dailyResponse = await fetch(
-          "http://127.0.0.1:8000/energy/daily"
+          `${import.meta.env.VITE_API_URL}/energy/daily`
         );
 
         const hourlyResponse = await fetch(
-          "http://127.0.0.1:8000/energy/hourly"
+          `${import.meta.env.VITE_API_URL}/energy/hourly`
         );
 
         const weeklyResponse = await fetch(
-          "http://127.0.0.1:8000/energy/weekly"
+          `${import.meta.env.VITE_API_URL}/energy/weekly`
         );
 
         const monthlyResponse = await fetch(
-          "http://127.0.0.1:8000/energy/monthly"
+          `${import.meta.env.VITE_API_URL}/energy/monthly`
         );
 
         const summary = await summaryResponse.json();
